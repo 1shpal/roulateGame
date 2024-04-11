@@ -1,0 +1,1011 @@
+{% extends "frontend/partials/layout.njk" %}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{{config.baseUrl}}frontend/css/dist/rulatte.css">
+<style>
+    .blinktext { color: #FFBB33; font-size: 25px;}
+    .normaltext { color: #fff;  font-size: 15px;}
+    .rebetCreate li { display: inline-block; }
+    .roulette-arrey th{ padding-left: 5px; }
+    .roulette-arrey td { font-size: 18px; text-align: center; }
+    
+</style>
+{% endblock %}
+{% block body %}
+
+{% if auth.user.id %}
+<img src="{{config.baseUrl}}frontend/img/{{user.firework}}" class="firework2" id="firework2">
+<img src="{{config.baseUrl}}frontend/img/{{user.firework}}" class="firework">
+{% elif auth.guest.id %}
+<img src="{{config.baseUrl}}frontend/img/{{auth.guest.firework.fire}}" class="firework2" id="firework2">
+<img src="{{config.baseUrl}}frontend/img/{{auth.guest.firework.fire}}" class="firework">
+{% else %}
+<img src="{{config.baseUrl}}frontend/img/firework4.gif" class="firework2" id="firework2">
+<img src="{{config.baseUrl}}frontend/img/firework4.gif" class="firework">
+{% endif %}
+
+<div class="select-game">
+    <div class="btn-group groupBtn" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-secondary btn-bitroule-game">Bitroule</button>
+        <button type="button" class="btn btn-secondary btn-stockTrading-game">Stock Trading</button>
+    </div>
+</div>
+
+
+<div class="col-lg-12 col-md-12 full-width bitroule" id="bitroule">
+    <div class="inner_content">
+        <div class="row">
+            <div class="col-sm-12">
+                {% if auth.user.id %}
+                <div class="mob-depoWith">
+                    <div class="dropdown user user-menu currMenu">
+                        <a class="btn-square2 dropdown-toggle" data-toggle="dropdown">
+                            <img class="imgAdd" alt="{{wallate.currencyDetails.currency_name | lower}}"
+                                data-img="{{wallate.currencyDetails.id}}">
+                            <span class="user_main_balance" data-coinno="{{wallate.currencyDetails.id}}"
+                                data-myval="{{wallate.UserWalletdata.id}}">{{wallate.UserWalletdata.main_balance}}</span>
+                        </a>
+                        <ul class="dropdown-menu cs-profile-nav currencyList">
+                        </ul>
+                    </div>
+                    <a href="{{config.baseUrl}}deposit" class="btn-blue text-uppercase">deposit</a>
+                    <a href="{{config.baseUrl}}withdraw" class="btn-blue text-uppercase">Withdraw</a>
+                </div>
+                {% elif auth.guest.id %}
+                <div class="mob-depoWith">
+                    <div class="dropdown user user-menu currMenu">
+                        <a class="btn-square2 dropdown-toggle" data-toggle="dropdown">
+                            <img class="imgAdd" src="/frontend/img/{{auth.guest.wallate.currency_image}}"
+                                alt="{{auth.guest.wallate.currency_name | lower}}" data-img="{{auth.guest.wallate.id}}">
+                            <span class="user_main_balance" data-coinno="{{auth.guest.wallate.id}}"
+                                data-myval="{{auth.guest.wallate.id}}">{{auth.guest.wallate.main_balance}}</span>
+                        </a>
+                        <ul class="dropdown-menu cs-profile-nav currencyList" id="myDropdown" class="dropdown-content">
+                            <li><a style="color: black" href="#">0.00000000 <span> <img
+                                            style=" height: 22px; width: 23px; padding-bottom: 2px; padding-right: 3px;"
+                                            src="/frontend/img/btc.svg" alt=""></span><span>BTC</span></a></li>
+                            <li><a style="color: black" href="#">0.00000000 <span> <img
+                                            style=" height: 22px; width: 23px; padding-bottom: 2px; padding-right: 3px;"
+                                            src="/frontend/img/eth.svg" alt=""> </span><span>ETH</span></a></li>
+                            <li><a style="color: black" href="#">0.00000000 <span> <img
+                                            style=" height: 22px; width: 23px; padding-bottom: 2px; padding-right: 3px;"
+                                            src="/frontend/img/ltc.svg" alt=""> </span><span>LTC</span></a></li>
+                            <li><a style="color: black" href="#">0.00000000 <span> <img
+                                            style=" height: 22px; width: 23px; padding-bottom: 2px; padding-right: 3px;"
+                                            src="/frontend/img/doge.svg" alt=""></span><span>DOGE</span></a></li>
+                            <li><a style="color: black" href="#"> {{auth.guest.wallate.main_balance}} <span> <img
+                                            style=" height: 22px; width: 23px; padding-bottom: 2px; padding-right: 3px;"
+                                            src="/frontend/img/select-chip.png" alt=""></span><span>ROUL1</span></a>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <a href="{{config.baseUrl}}deposit" class="btn-blue text-uppercase">deposit</a>
+                    <a href="{{config.baseUrl}}withdraw" class="btn-blue text-uppercase">Withdraw</a>
+                </div>
+                {% endif %}
+            </div>
+
+
+            <div class="bet-round">
+                <!-- <div class="col-md-9 col-lg-8">
+                    <div class="bet-title">Game Hash: <span class="gameHash">0</span></div>
+                </div> -->
+                <div class="col-md-7 col-lg-8">
+                    <div class="bet-title">BET : <span class="noBets">0.0</span></div>
+                </div>
+                <div class="col-md-5 col-lg-4">
+                    <div class="round">Round : <span class="roundNo">00</span></div>
+                    <input type="text" id="gameno" hidden>
+                </div>
+            </div>
+
+
+                {% if auth.user.id or auth.guest.id %}
+                <div class="min-h-middle col-md-5 col-lg-5"> 
+                {% else  %}
+                <div class="min-h-middle col-md-7 col-lg-8">
+                {% endif %}
+                <div class="col-md-12 roullate-frame">
+                    <div class="mainbody">
+                        <div class="roullete_box">
+                            <div class="spinner">
+                                <div class="ball"><span></span></div>
+                                <div class="platebg"></div>
+                                <div class="platetop"></div>
+                                <div id="toppart" class="topnodebox">
+                                    <div class="silvernode"></div>
+                                    <div class="topnode silverbg"></div>
+                                    <span class="top silverbg"></span>
+                                    <span class="right silverbg"></span>
+                                    <span class="down silverbg"></span>
+                                    <span class="left silverbg"></span>
+                                </div>
+                                <div id="rcircle" class="pieContainer">
+                                    <div class="pieBackground"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="winBet-col">
+                    {% if(auth.user.id) %}
+                    <div class="bet"> <span class="lastStop"></span></div>
+                    <div class="win"><label>Win</label>
+                        <div class="win-count lastWin"></div>
+                    </div>
+                    {% elif auth.guest.id %}
+                    <div class="bet"> <span class="lastStop"></span></div>
+                    <div class="win"><label>Win</label>
+                        <div class="win-count lastWin"></div>
+                    </div>
+                    {% endif %}
+
+                    <div class="spin-drop w-btn samebetlistshow">
+                        <button class="same-bet reBets dropdown-toggle" type="button" data-toggle="dropdown">Same Bet
+                            and Spin</button>
+
+                        <ul class="dropdown-w">
+                            <li><button type="button" class="samSpinbtn"> SPIN</button></li>
+                            <li><button type="button" class="samTarbobtn">TURBO SPIN</button></li>
+                            <li><span class="counterTimer"></span></li>
+                        </ul>
+                    </div>
+                    <div class="doublebetAmount">
+                        <button class="double-bet 2xBets dropdown-toggle" type="button" data-toggle="dropdown"> X2 BET
+                            AND SPIN</button>
+                    </div>
+
+                    <!-- bg-grey add class -->
+                </div>
+                <div class="game-hash">
+                    <div class="title">Game Hash</div>
+                    <div class="hash-key gameHash">
+                    </div>
+                </div>
+                <div class="prev-num-list">
+                    <ul class="list-unstyled list-inline text-center rouletteHistory"></ul>
+                </div>
+            </div>
+
+            <!-- start : history array display  -->
+            {% if auth.user.id or auth.guest.id %}
+            <div class="col-md-4 col-lg-4">
+                <div class="roulette-arrey">
+                    <table class="history-maim-tbl" id="history-maim-tbl" style="color: white; ">
+                        <tr >
+                            <td><table class="red-black" style="  border-collapse: initial;  ">
+                                <thead><tr><th>Red</th><th>Black</th></tr></thead><tbody></tbody></table>
+                            </td>   
+                            <td><table class="even-odd" style=" border-collapse: initial; ">
+                                <thead><tr><th>Even</th><th>Odd</th></tr></thead><tbody></tbody></table>
+                            </td>   
+                            <td><table class="1-18to19-36" style="  border-collapse: initial; ">
+                                <thead><tr><th>1-18</th><th>19-36</th></tr></thead><tbody></tbody></table>
+                            </td>   
+                        </tr>
+                        <tr>
+                            <td ><table class="leftMddRight" style="  border-collapse: initial; ">
+                                <thead><tr><th>Left</th><th>Midd</th><th>Right</th></tr></thead><tbody></tbody></table>
+                            </td>   
+                            <td ><table class="betweenTwelveNumber" style="  border-collapse: initial; ">
+                                <thead><tr><th>1-12</th><th>2-12</th><th>3-12</th></tr></thead><tbody></tbody></table>
+                            </td>   
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+            <!-- end : history array display  -->
+
+            {% if auth.user.id or auth.guest.id  %}
+            <div class="col-md-3 col-lg-3">
+            {%else%}
+            <div class="col-md-4 col-lg-4">
+            {% endif %}
+                <div class="deskboard">
+                    <div class="roulette-coin">
+                        <div class="anim-object lobby active">
+                            <div class="table-main-frame " style="width:270px">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <table style="border-spacing: 3px; border-collapse: initial;">
+                                                <tr class="nums">
+                                                    <td class="num red jackport1" data-color="1" data-class="red"> <span
+                                                            class="blink1">1</span></td>
+                                                    <td class="num black jackport2" data-color="2" data-class="black">
+                                                        <span class="blink2">2</span>
+                                                    </td>
+                                                    <td class="num red jackport3" data-color="3" data-class="red"><span
+                                                            class="blink3">3</span></td>
+                                                </tr>
+                                                <tr class="nums">
+                                                    <td class="num black jackport4" data-color="4" data-class="black">
+                                                        <span class="blink4">4</span>
+                                                    </td>
+                                                    <td class="num red jackport5" data-color="5" data-class="red"><span
+                                                            class="blink5">5</span></td>
+                                                    <td class="num black jackport6" data-color="6" data-class="black">
+                                                        <span class="blink6">6</span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="nums">
+                                                    <td class="num red jackport7" data-color="7" data-class="red"> <span
+                                                            class="blink7">7</span></td>
+                                                    <td class="num black jackport8" data-color="8" data-class="black">
+                                                        <span class="blink8">8</span>
+                                                    </td>
+                                                    <td class="num red jackport9" data-color="9" data-class="red"><span
+                                                            class="blink9">9</span></td>
+                                                </tr>
+                                                <tr class="nums">
+                                                    <td class="num  black jackport10" data-color="10"
+                                                        data-class="black"> <span class="blink10">10</span></td>
+                                                    <td class="num black jackport11" data-color="11" data-class="black">
+                                                        <span class="blink11">11</span>
+                                                    </td>
+                                                    <td class="num red jackport12" data-color="12" data-class="red">
+                                                        <span class="blink12">12</span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="sector " data-sector="4">1st<br> 12</td>
+                                        <td style="border:0">
+                                            <table height="100%" style="border-spacing: 3px; border-collapse: initial;">
+                                                <tr>
+                                                    <td style="height: 50%" colspan="2" class="sector" data-sector="7">
+                                                        1<br> to<br> 18</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 50%" colspan="2" class="sector" data-sector="8">
+                                                        E<br>V<br>E<br>N</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table style="border-spacing: 3px; border-collapse: initial;">
+                                                <tr class="nums">
+                                                    <td class="num  black jackport13" data-color="13"
+                                                        data-class="black"> <span class="blink13">13</span></td>
+                                                    <td class="num red jackport14" data-color="14" data-class="red">
+                                                        <span class="blink14">14</span>
+                                                    </td>
+                                                    <td class="num black jackport15" data-color="15" data-class="black">
+                                                        <span class="blink15">15</span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="nums">
+                                                    <td class="num  red jackport16" data-color="16" data-class="red">
+                                                        <span class="blink16">16</span>
+                                                    </td>
+                                                    <td class="num black jackport17" data-color="17" data-class="black">
+                                                        <span class="blink17">17</span>
+                                                    </td>
+                                                    <td class="num red jackport18" data-color="18" data-class="red">
+                                                        <span class="blink18">18</span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="nums">
+                                                    <td class="num  red jackport19" data-color="19" data-class="red">
+                                                        <span class="blink19">19</span>
+                                                    </td>
+                                                    <td class="num black jackport20" data-color="20" data-class="black">
+                                                        <span class="blink20">20</span>
+                                                    </td>
+                                                    <td class="num red jackport21" data-color="21" data-class="red">
+                                                        <span class="blink21">21</span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="nums">
+                                                    <td class="num  black jackport22" data-color="22"
+                                                        data-class="black"> <span class="blink22">22</span></td>
+                                                    <td class="num red jackport23" data-color="23" data-class="red">
+                                                        <span class="blink23">23</span>
+                                                    </td>
+                                                    <td class="num black jackport24" data-color="24" data-class="black">
+                                                        <span class="blink24">24</span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="sector bg-red" data-sector="5">2nd<br> 12</td>
+                                        <td style="border: 0">
+                                            <table height="100%" style="border-spacing: 3px; border-collapse: initial;">
+                                                <tr>
+                                                    <td style="height: 50%" colspan="2" class="sector bg-red border-red"
+                                                        data-sector="9">R<br>E<br>D</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 50%" colspan="2"
+                                                        class="sector bg-black border-darkGreen" data-sector="10">
+                                                        B<br>L<br>K<br> </td><!-- B<br>L<br>A<br>C<br>K</td> -->
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table style="border-spacing: 3px; border-collapse: initial;">
+                                                <tr class="nums">
+                                                    <td class="num  red jackport25" data-color="25" data-class="red">
+                                                        <span class="blink25">25</span>
+                                                    </td>
+                                                    <td class="num black jackport26" data-color="26" data-class="black">
+                                                        <span class="blink26">26</span>
+                                                    </td>
+                                                    <td class="num red jackport27" data-color="27" data-class="red">
+                                                        <span class="blink27">27</span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="nums">
+                                                    <td class="num  black jackport28" data-color="28"
+                                                        data-class="black"> <span class="blink28">28</span></td>
+                                                    <td class="num black jackport29" data-color="29" data-class="black">
+                                                        <span class="blink29">29</span>
+                                                    </td>
+                                                    <td class="num red jackport30" data-color="30" data-class="red">
+                                                        <span class="blink30">30</span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="nums">
+                                                    <td class="num  black jackport31" data-color="31"
+                                                        data-class="black"> <span class="blink31">31</span></td>
+                                                    <td class="num red jackport32" data-color="32" data-class="red">
+                                                        <span class="blink32">32</span>
+                                                    </td>
+                                                    <td class="num black jackport33" data-color="33" data-class="black">
+                                                        <span class="blink33">33</span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="nums">
+                                                    <td class="num  red jackport34" data-color="34" data-class="red">
+                                                        <span class="blink34">34</span>
+                                                    </td>
+                                                    <td class="num black jackport35" data-color="35" data-class="black">
+                                                        <span class="blink35">35</span>
+                                                    </td>
+                                                    <td class="num red jackport36" data-color="36" data-class="red">
+                                                        <span class="blink36">36</span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="sector bg-black" data-sector="6">3rd<br> 12</td>
+                                        <td style="border:0">
+                                            <table height="100%" style="border-spacing: 3px; border-collapse: initial;">
+                                                <tr>
+                                                    <td style="height: 50%" colspan="2" class="sector" data-sector="11">
+                                                        O<br>D<br>D</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 50%" colspan="2" class="sector" data-sector="12">
+                                                        19<br> to<br> 36</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0">
+                                            <table>
+                                                <tr class="nums">
+                                                    <td class="sector bg-black" data-sector="3"><span class="vt">2 to
+                                                            1</span></td>
+                                                    <td class="sector bg-red" data-sector="2"><span class="vt">2 to
+                                                            1</span></td>
+                                                    <td class="sector" data-sector="1"><span class="vt">2 to 1</span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="nums">
+                                                    <td class="hidden"></td>
+                                                </tr>
+                                                <tr class="nums">
+                                                    <td class="hidden"></td>
+                                                </tr>
+                                                <tr class="nums">
+                                                    <td class="hidden"></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="mob-clr-btn"><a href="javascript:void(0);"
+                                                class="undoBets clr-btn">CLR</a></td>
+                                        <td class="hidden empty"></td>
+                                    </tr>
+                                </table>
+                                <div class="add-chips" style="display: none"></div>
+                            </div>
+                            <!-- controlls start -->
+                            <div class="controlls">
+                                <!-- <div class="btn btn-zero blink0" data-num="0"></div> -->
+                                <!-- col 1 -->
+                                <div class="col1">
+                                    <div class="row1">
+                                        <div class="btn m rm cm" data-num="1"></div>
+                                    </div>
+                                    <div class="row2">
+                                        <div class="btn m rm cm" data-num="4"></div>
+                                    </div>
+                                    <div class="row3">
+                                        <div class="btn m rm cm" data-num="7"></div>
+                                    </div>
+                                    <div class="row4">
+                                        <div class="btn m rm cm" data-num="10"></div>
+                                    </div>
+                                    <div class="row5">
+                                        <div class="btn m rm cm" data-num="13"></div>
+                                    </div>
+                                    <div class="row6">
+                                        <div class="btn m rm cm" data-num="16"></div>
+                                    </div>
+                                    <div class="row7">
+                                        <div class="btn m rm cm" data-num="19"></div>
+                                    </div>
+                                    <div class="row8">
+                                        <div class="btn m rm cm" data-num="22"></div>
+                                    </div>
+                                    <div class="row9">
+                                        <div class="btn m rm cm" data-num="25"></div>
+                                    </div>
+                                    <div class="row10">
+                                        <div class="btn m rm cm" data-num="28"></div>
+                                    </div>
+                                    <div class="row11">
+                                        <div class="btn m rm cm" data-num="31"></div>
+                                    </div>
+                                    <div class="row12">
+                                        <div class="btn m rm cm" data-num="34"></div>
+                                    </div>
+                                    <div class="row13">
+                                        <div class="btn m rm cm" data-type="sector" data-num="selector3"
+                                            data-sector="3"></div>
+                                    </div>
+                                </div>
+                                <!-- col 2 -->
+                                <div class="col2">
+                                    <div class="row1">
+                                        <div class="btn m rm cm" data-num="2"></div>
+                                    </div>
+                                    <div class="row2">
+                                        <div class="btn m rm cm" data-num="5"></div>
+                                    </div>
+                                    <div class="row3">
+                                        <div class="btn m rm cm" data-num="8"></div>
+                                    </div>
+                                    <div class="row4">
+                                        <div class="btn m rm cm" data-num="11"></div>
+                                    </div>
+                                    <div class="row5">
+                                        <div class="btn m rm cm" data-num="14"></div>
+                                    </div>
+                                    <div class="row6">
+                                        <div class="btn m rm cm" data-num="17"></div>
+                                    </div>
+                                    <div class="row7">
+                                        <div class="btn m rm cm" data-num="20"></div>
+                                    </div>
+                                    <div class="row8">
+                                        <div class="btn m rm cm" data-num="23"></div>
+                                    </div>
+                                    <div class="row9">
+                                        <div class="btn m rm cm" data-num="26"></div>
+                                    </div>
+                                    <div class="row10">
+                                        <div class="btn m rm cm" data-num="29"></div>
+                                    </div>
+                                    <div class="row11">
+                                        <div class="btn m rm cm" data-num="32"></div>
+                                    </div>
+                                    <div class="row12">
+                                        <div class="btn m rm cm" data-num="35"></div>
+                                    </div>
+                                    <div class="row13">
+                                        <div class="btn m rm cm" data-type="sector" data-num="selector2"
+                                            data-sector="2"></div>
+                                    </div>
+                                </div>
+                                <!-- col 3 -->
+                                <div class="col3">
+                                    <div class="row1">
+                                        <div class="btn m rm cm" data-num="3"></div>
+                                    </div>
+                                    <div class="row2">
+                                        <div class="btn m rm cm" data-num="6"></div>
+                                    </div>
+                                    <div class="row3">
+                                        <div class="btn m rm cm" data-num="9"></div>
+                                    </div>
+                                    <div class="row4">
+                                        <div class="btn m rm cm" data-num="12"></div>
+                                    </div>
+                                    <div class="row5">
+                                        <div class="btn m rm cm" data-num="15"></div>
+                                    </div>
+                                    <div class="row6">
+                                        <div class="btn m rm cm" data-num="18"></div>
+                                    </div>
+                                    <div class="row7">
+                                        <div class="btn m rm cm" data-num="21"></div>
+                                    </div>
+                                    <div class="row8">
+                                        <div class="btn m rm cm" data-num="24"></div>
+                                    </div>
+                                    <div class="row9">
+                                        <div class="btn m rm cm" data-num="27"></div>
+                                    </div>
+                                    <div class="row10">
+                                        <div class="btn m rm cm" data-num="30"></div>
+                                    </div>
+                                    <div class="row11">
+                                        <div class="btn m rm cm" data-num="33"></div>
+                                    </div>
+                                    <div class="row12">
+                                        <div class="btn m rm cm" data-num="36"></div>
+                                    </div>
+                                    <div class="row13">
+                                        <div class="btn m rm cm" data-type="sector" data-num="selector1"
+                                            data-sector="1"></div>
+                                    </div>
+                                </div>
+                                <!-- col 4 -->
+                                <div class="col4">
+                                    <div class="row1">
+                                        <div class="btn ms4 rm cm" data-type="sector" data-num="selector4"
+                                            data-sector="4"></div>
+                                    </div>
+                                    <div class="row2">
+                                        <div class="btn ms4 rm cm" data-type="sector" data-num="selector5"
+                                            data-sector="5"></div>
+                                    </div>
+                                    <div class="row3">
+                                        <div class="btn ms4 rm cm" data-type="sector" data-num="selector6"
+                                            data-sector="6"></div>
+                                    </div>
+                                </div>
+                                <!-- col 5 -->
+                                <div class="col5">
+                                    <div class="row1">
+                                        <div class="btn ms2 rm cm" data-type="sector" data-num="selector7"
+                                            data-sector="7"></div>
+                                    </div>
+                                    <div class="row2">
+                                        <div class="btn ms2 rm cm" data-type="sector" data-num="selector8"
+                                            data-sector="8"></div>
+                                    </div>
+                                    <div class="row3">
+                                        <div class="btn ms2 rm cm" data-type="sector" data-num="selector9"
+                                            data-sector="9"></div>
+                                    </div>
+                                    <div class="row4">
+                                        <div class="btn ms2 rm cm" data-type="sector" data-num="selector10"
+                                            data-sector="10"></div>
+                                    </div>
+                                    <div class="row5">
+                                        <div class="btn ms2 rm cm" data-type="sector" data-num="selector11"
+                                            data-sector="11"></div>
+                                    </div>
+                                    <div class="row6">
+                                        <div class="btn ms2 rm cm" data-type="sector" data-num="selector12"
+                                            data-sector="12"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- controlls end -->
+                        </div>
+                        <input type="hidden" name="bet_number">
+                        <input type="hidden" name="total_bets">
+                        <input type="hidden" name="selected_color">
+                        <div class="table_coins_timer">
+                            <div class="tbl_coins">
+                                <!-- <a href="javascript:void(0);" class="clearBets" >                                          
+                                                <img src="{{config.baseUrl}}frontend/img/undo.png" data-toggle="tooltip"   title="ClearAll" data-placement="bottom">                                          
+                                            </a> -->
+                                <!-- <a href="javascript:void(0);" class="undoBets">
+                                    <img src="{{config.baseUrl}}frontend/img/undo.png" data-toggle="tooltip" title="UNDO" data-placement="bottom">
+                                </a> -->
+                                <a href="javascript:void(0);" class="coin-btn clr-btn undoBets desk-clr-btn">CLR</a>
+                                <a href="javascript:void(0);">
+                                    <input type="radio" name="bet_amount" value="0.5" id="coin_005"
+                                        class="input-hidden" />
+                                    <label for="coin_005">
+                                        <img src="{{config.baseUrl}}frontend/img/chips-dark-blue-green.png"
+                                            data-toggle="tooltip" title="0.5" data-placement="bottom">
+                                    </label>
+                                </a>
+                                <a href="javascript:void(0);" class="coin-btn">
+                                    <input type="radio" name="bet_amount" value="1" id="coin_1" class="input-hidden" />
+                                    <label for="coin_1">
+                                        <img src="{{config.baseUrl}}frontend/img/chips-black.png" data-toggle="tooltip"
+                                            title="1" data-placement="bottom">
+                                    </label>
+                                </a>
+                                <a href="javascript:void(0);" class="coin-btn">
+                                    <input type="radio" name="bet_amount" value="5" id="coin_5" class="input-hidden" />
+                                    <label for="coin_5">
+                                        <img src="{{config.baseUrl}}frontend/img/chips-light-blue.png"
+                                            data-toggle="tooltip" title="5" data-placement="bottom">
+                                    </label>
+                                </a>
+                                <div class="timer_roulet">
+                                    <div class="spin-drop spinbtnlist">
+                                        <button class="spin_roulet place_bet_light_roulette dropdown-toggle"
+                                            type="button" data-toggle="dropdown" id="spinR"
+                                            aria-expanded="false">SPIN</button>
+                                        <ul class="dropdown-spin mainSpinBet">
+                                            <li><button type="button" class="spinbtn"> SPIN</button></li>
+                                            <li><button type="button" class="tarbobtn">TURBO SPIN</button></li>
+                                            <!-- <li><<button type="button" class="counterTimer"></button>></li> -->
+                                            <li><span class="counterTimer"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- <button type="button" id="spinR"
+                                        class="spin_roulet place_bet_light_roulette">SPIN</button>
+                                </div> -->
+                                <a href="javascript:void(0);" class="coin-btn">
+                                    <input type="radio" name="bet_amount" value="25" id="coin_25"
+                                        class="input-hidden" />
+                                    <label for="coin_25">
+                                        <img src="{{config.baseUrl}}frontend/img/chips-blue.png" data-toggle="tooltip"
+                                            title="25" data-placement="bottom">
+                                    </label>
+                                </a>
+                                <a href="javascript:void(0);" class="coin-btn">
+                                    <input type="radio" name="bet_amount" value="100" id="coin_100"
+                                        class="input-hidden" />
+                                    <label for="coin_100">
+                                        <img src="{{config.baseUrl}}frontend/img/chips-perpal.png" data-toggle="tooltip"
+                                            title="100" data-placement="bottom">
+                                    </label>
+                                </a>
+                                <a href="javascript:void(0);" class="coin-btn">
+                                    <input type="radio" name="bet_amount" value="500" id="coin_500"
+                                        class="input-hidden" />
+                                    <label for="coin_500">
+                                        <img src="{{config.baseUrl}}frontend/img/chips-green.png" data-toggle="tooltip"
+                                            title="500" data-placement="bottom">
+                                    </label>
+                                </a>
+                                <!-- <a href="javascript:void(0);">
+                                    <input type="radio" name="bet_amount" value="2000" id="coin_2000" class="input-hidden" />
+                                    <label for="coin_2000">
+                                        <img src="{{config.baseUrl}}frontend/img/chips-red.png" data-toggle="tooltip" title="2000" data-placement="bottom">
+                                    </label>
+                                </a>
+                                <a href="javascript:void(0);" class="reBets">
+                                    <img src="{{config.baseUrl}}frontend/img/redo.png" data-toggle="tooltip" title="Rebets" data-placement="bottom">
+                                </a> -->
+                                <a href="javascript:void(0);" class="coin-btn betDouble">
+                                    <img src="{{config.baseUrl}}frontend/img/2x.png" data-toggle="tooltip"
+                                        id="betDouble_navy" title="DOUBLE" data-placement="bottom">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<div class="col-lg-12 col-md-12 full-width stock-treding" id="stock-treding">
+    <div class="row">
+        <div class="container-fluid main-part">
+            <div class="row">
+                
+                <div class="col-md-9">
+                    <div class="rulattes_box">
+                        <div class="strock_bar">
+                            <div class="strock_round"><span>20s</span><p>Time</p></div>
+                            <div class="strock_round active"><span>80</span><p>Lorem</p></div>
+                            <div class="strock_round"><span>13</span><p>Counter Win</p></div>
+                        </div>
+                        <div id="container" style="height: 250px; width: 100%;"></div>  
+                        <div class="bulettes_btn">
+                            <button type="button" class="btn btn-primary btn_buy">Buy</button>
+                            <button type="button" class="btn btn-primary btn_sell">Sell</button>
+                        </div>
+                        <div class="bulattes">
+                            <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Sr. No</th>
+                                    <th scope="col">Time(in sec) </th>
+                                    <th scope="col">Bought Value</th>
+                                    <th scope="col">Sold Value</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="border_top">
+                                    <td scope="row">1.</td>
+                                    <td>12 sec</td>
+                                    <td>23</td>
+                                    <td>26</td>
+                                    <td>Potential Win - 3</td>
+                                </tr>
+                                <tr>
+                                    <td scope="row">2.</td>
+                                    <td>20 sec </td>
+                                    <td>90</td>
+                                    <td>80</td>
+                                    <td>Potential Win - 10</td>
+                                </tr>
+                                <tr>
+                                    <td scope="row">3.</td>
+                                    <td>28 sec</td>
+                                    <td>20</td>
+                                    <td>30</td>
+                                    <td>Potential Win - 20</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="rulatte_right">
+                        <div class="rulatte_count">
+                            <div class="rulatte_title">Point Value</div>
+                            <div class="rulatte_all_btn">
+                                <button type="button" class="btn  btn_count">0.1</button>
+                                <button type="button" class="btn  btn_count">0.2</button>
+                                <button type="button" class="btn  btn_count">0.5</button>
+                                <button type="button" class="btn  btn_count">0.1</button>
+                                <button type="button" class="btn  btn_count">2.0</button>
+                                <button type="button" class="btn  btn_count">2.5</button>
+                                <button type="button" class="btn  btn_count">10.0</button>
+                                
+                            </div>
+                            <div class="start_btn">
+                                <button type="button" class="btn  btn_start">Start</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block popup %}
+<div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="welcome">
+                <div class="welcome-title">{{settings.landingHeaderTxt}}</div>
+                <div class="welcome-text">{{settings.landingBodyTxt}}</div>
+                <a href="javascript:void(0)" class="welcome-btn">Play</a>
+                <div class="welcome-img">
+                    <img src="{{config.baseUrl}}frontend/img/welcome-roulette.png" class="welcome-roulette" alt="">
+                    <img src="{{config.baseUrl}}frontend/img/welcome-coin.png" class="welcome-coin" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+
+<script type="text/javascript" src="{{config.baseUrl}}frontend/js/jquery.keyframes.min.js"></script>
+
+<!-- chart link -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/annotations.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<!-- ----------------- -->
+{% if not auth.user.id and not auth.guest.id %}
+<script>
+    console.log('23323232');
+    $(window).load(function () {
+        setTimeout(() => {
+            $('#firework2').css('display', 'block')
+            setTimeout(() => {
+                $('#firework2').css('display', 'none')
+                setTimeout(() => {
+                    $('#firework2').css('display', 'block')
+                    setTimeout(() => {
+                        $('#firework2').css('display', 'none')
+                        setTimeout(() => {
+                            $('#firework2').css('display', 'block')
+                            setTimeout(() => {
+                                $('#firework2').css('display', 'none')
+                                setTimeout(() => {
+                                    $('#firework2').css('display', 'block')
+                                    setTimeout(() => {
+                                        $('#firework2').css('display', 'none')
+                                        setTimeout(() => {
+                                            $('#firework2').css('display', 'block')
+                                            setTimeout(() => {
+                                                $('#firework2').css('display', 'none')
+                                                setTimeout(() => {
+                                                    $('#firework2').css('display', 'block')
+                                                    setTimeout(() => {
+                                                        $('#firework2').css('display', 'none')
+                                                        setTimeout(() => {
+                                                            $('#firework2').css('display', 'block')
+                                                            setTimeout(() => {
+                                                                $('#firework2').css('display', 'none')
+                                                            }, 5000);
+                                                        }, 20000);
+                                                    }, 5000);
+                                                }, 20000);
+                                            }, 5000);
+                                        }, 20000);
+                                    }, 5000);
+                                }, 20000);
+                            }, 5000);
+                        }, 20000);
+                    }, 5000);
+                }, 20000);
+            }, 5000);
+        }, 15000);
+    })
+</script>
+{% endif %}
+
+<script>
+    var hightchart = Highcharts.chart('container', {
+        chart: {
+            type: 'line',
+            // type: 'spline',
+            backgroundColor: 'none',
+            events: {
+                load: function () {
+                    let series = this.series[0];
+                    var a = true;
+                    var b = false;
+                    XaxisYaxis(series, a, b)
+                }   
+            }
+        },
+        title: {
+            text: ''
+        },
+        xAxis: {
+            labels: {
+                enabled: false
+            }
+        },
+        series: [{
+            name: 'Random data',
+            data: []
+        }]
+    });
+    console.log('hightchart', hightchart.series[0]);
+    
+    function XaxisYaxis( series, a, b){
+        let isStartNumber = true
+        let startNumber;
+        let x
+        let y
+        var graphInterval = setInterval(function () {
+            if(isStartNumber == true){
+                console.log('first');
+                startNumber = 100
+                // startNumber = 100
+                series.addPoint([ startNumber],a, b);
+            }else{
+                console.log('second');
+                let min = startNumber - 2;
+                let max = startNumber + 2;
+                function getRandomNumber(min, max) {
+                    return Math.floor(Math.random() * (max - min + 1)) + min;
+                }
+                var number = getRandomNumber(min, max)
+                console.log('number -->', number);
+                x = number
+                y = number
+                startNumber = number
+                series.addPoint([ y],a, b);
+            }
+            isStartNumber = false
+        }, 250);
+        setTimeout(function() { 
+        clearInterval(graphInterval); 
+        }, 30000);
+    }
+    
+</script>
+
+<script>
+    $('.btn-stockTrading-game').click(function(){
+        $('#stock-treding').show()
+        $('#bitroule').hide()
+    })
+    $('.btn-bitroule-game').click(function(){
+        $('#stock-treding').hide()
+        $('#bitroule').show()
+    })
+
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    var setPopupTimeOut;
+    var setScollerTimer;
+    $(document).ready(function () {
+        $("#coin_1").click();
+        $(".spinbtnlist button").click(function () {
+            clearTimeout(setPopupTimeOut);
+            $(".samebetlistshow").removeClass("spin-open");
+
+            $(".spinbtnlist").addClass("spin-open");
+            setPopupTimeOut = setTimeout(function () {
+                $(".place_bet_light_roulette").removeClass("active");
+                $(".spinbtnlist").removeClass("spin-open");
+            }, 3000);
+        });
+
+        $(".reBets").click(function () {
+            clearTimeout(setPopupTimeOut);
+            $(".spinbtnlist").removeClass("spin-open");
+
+            setPopupTimeOut = setTimeout(function () {
+                $(".samebetlistshow").removeClass("spin-open");
+            }, 3000);
+            $(".samebetlistshow").addClass("spin-open");
+        });
+
+        // $(".samebetlistshow button").click(function () {
+        //     clearTimeout(setPopupTimeOut);
+        //     $(".spinbtnlist").removeClass("spin-open");
+
+        //     setPopupTimeOut = setTimeout(function () {
+        //         $(".samebetlistshow").removeClass("spin-open");
+        //     }, 3000);
+        //     $(".samebetlistshow").addClass("spin-open");
+        // });
+
+        $(".side-plus").click(function () {
+            clearTimeout(setPopupTimeOut);
+            $(".side-plus").removeClass("plus-demo");
+
+            setPopupTimeOut = setTimeout(function () {
+                $(".side-plus").removeClass("plus-btn");
+            }, 3000);
+            $(".side-plus").addClass("plus-btn");
+        });
+
+    });
+    // $(window).resize(function () {
+    //     gototop();
+    // });
+    // function gototop() {
+    //     if ($(window).width() < 992) {
+    //         if ($(".spin_roulet").hasClass("page-top") == false) {
+    //             $(".spin_roulet").addClass("page-top");
+    //         }
+    //         // $('.page-top').click(function () {
+    //         //     $("html, body").animate({
+    //         //         scrollTop: 0
+    //         //     }, 600);
+    //         //     return false;
+    //         // });
+    //     } else {
+    //         $(".spin_roulet").removeClass("page-top")
+    //     }
+    // }
+</script>
+
+
+{% if auth.user.id %}
+<script type="text/javascript" src="{{config.baseUrl}}frontend/script/light-jackpot.js"></script>
+<script type="text/javascript" src="{{config.baseUrl}}frontend/script/light-jackpot-common.js"></script>
+<script type="text/javascript" src="{{config.baseUrl}}frontend/script/cryptoCurrency.js"></script>
+{% else %}
+<script type="text/javascript" src="{{config.baseUrl}}frontend/script/light-jackpot-guest.js"></script>
+<script type="text/javascript" src="{{config.baseUrl}}frontend/script/light-jackpot-comman-guest.js"></script>
+{% endif %}
+
+
+{% endblock %}

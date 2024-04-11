@@ -1,0 +1,146 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>A Simple Responsive HTML Email</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,700i,900,900i" rel="stylesheet">
+    <style type="text/css">
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            line-height: normal;
+            margin: 0;
+            padding: 0;
+        }
+
+        .apo-box {
+            background: #ebebeb;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .h1 {
+            font-weight: 700;
+            padding-bottom: 15px;
+            font-size: 25px;
+            color: #000;
+            text-align: left;
+        }
+
+        .h2 {
+            font-weight: 700;
+            padding: 0 0 20px;
+            font-size: 25px;
+            color: #000;
+            text-align: left;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .bd {
+            background: #fff;
+        }
+
+        .title {
+            width: 100%;
+            padding: 0 0 7px 0;
+            float: left;
+            font-weight: 700;
+        }
+
+        .title-detail {
+            padding: 10px;
+            float: left;
+            width: 100%;
+            background: #eeeeee;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <H2 style="margin-left:50px; padding: 20px 20px 0;">Hi Dev,</H2>
+    <p style="margin-left:80px;">This is your completed game round varification of the fairness detail</p>
+    <table width="100%" border="0" cellpadding="0" cellspacing="0"
+        style="max-width: 640px; margin: 0 auto; padding: 20px 20px 0;">
+        <tr>
+            <td>
+                <!--header start-->
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" class="bdb-black">
+                    <tr>
+                        <td>
+                            <h1 class="h1">Varification of the fairness</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h2 class="h2">Round 161</h2>
+                        </td>
+                    </tr>
+                </table>
+                <!--header end-->
+
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" class="apo-box">
+                    <tr>
+                        <td class="bd">
+                            <div class="title">Round start Time</div>
+                            <div class="title-detail">06:19:23</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bd">
+                            <div class="title">Game Hash:Sha256(Server Seed)</div>
+                            <div class="title-detail">sgguwqgugudHSHQHDLQwjkdkljSIUBCASVFIU</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bd">
+                            <div class="title">Server Seed</div>
+                            <div class="title-detail">9fxZtEt1A3sgYndMNOKVLPluvhkaIxbFEi9Fz7UheU3YzHy7PS</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bd">
+                            <div class="title">Client Seed</div>
+                            <div class="title-detail">thMOkDfdmGn5</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bd">
+                            <div class="title">Nounce</div>
+                            <div class="title-detail">06:15:14</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bd">
+                            <div class="title">Hash Generated : SHA512(Server Seed + Client Seed + Nonce)</div>
+                            <div class="title-detail">
+                                ce97be3ab281e3acec7d711c65900aef4074e7736dfc5737ce9968918d6beb59bfda3d565dbf6f7fa5e5c51c66dd8d6bd1277d5770fa2c0b556434d6a5f66730
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bd">
+                            <div class="title">Decimal of The Hash Generated</div>
+                            <div class="title-detail"><span class="hashstop" style="background-color: yellow;
+                                font-weight: bold;
+                                font-size: medium;">06</span> 51 90 58 78 29 27 72 36 25 13 28 01 44 10 39 64 16 31 15
+                                09 52 87 55 06 53 04 45 41 07 35 89 91 18 61 86 93 91 11 27 65 29 97 28 02 21 41 07 09
+                                39 25 87 12 50 44 11 85 00 52 14 65 46 03 48</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bd">
+                            <div class="title">Stop Number</div>
+                            <div class="title-detail">6</div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

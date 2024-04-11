@@ -1,0 +1,162 @@
+{% extends "backend/partials/layout.njk" %}
+
+{% block style %}
+<style>
+  .inputField {
+    padding: 8px;
+  }
+
+  label {
+    padding-top: 12px;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>{{title}}</h1>
+  <ol class="breadcrumb">
+    <li><a href="/backend/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="/backend/user">User Master</a></li>
+    <li class="active">{{title}}</li>
+  </ol>
+</section>
+<!-- /.Content Header -->
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+        </div>
+        <form id="editUserForm" role="form" method="post" action="/backend/user/updateUser/{{user.id}}">
+          <div class="box-body ">
+            <div class="form-group">
+              <label for="firstname" class="col-md-3 control-label">Full Name</label>
+              <div class="col-md-9 inputField">
+                <input type="text" placeholder="Full Name" class="form-control" name="name" id="fullname"
+                  value="{{user.name}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email" class="col-md-3 control-label">Email</label>
+              <div class="col-md-9 inputField">
+                <input type="text" placeholder="Email" class="form-control" name="email" id="email"
+                  value="{{user.email_id}}">
+              </div>
+            </div>
+            <!--div class="form-group">
+                <label for="image" class="col-md-3 control-label">Image</label>
+                <div class="col-md-8 inputField">
+                  <input type="file" class="form-control" name="image" id="image">
+                </div>
+                <div class="col-md-1">
+                  <img src="/upload/user/{{user.profile_image}}" width="50px" height="50px"/>
+                </div>
+              </div-->
+          </div>
+          <div>
+            <!-- <h2>User Permission</h2> -->
+            <div class="form-group">
+              <label for="user_permission" class="col-md-3 control-label">User Permission</label>
+              <div col-md-9 inputField>
+                <label for="playpermission">Is Game
+                  <input type="checkbox" class="permission" name="playpermission" {% if user.status == 1 %}
+                    checked='checked' value="true" {% else %} value="false" {% endif %}>
+                </label>
+                <label for="islogin">Is Login
+                  <input type="checkbox" class="permission" name="islogin" {% if user.is_login == 1 %} checked='checked'
+                    value="true" {% else %} value="false" {% endif %}>
+                </label>
+                <!-- <label for="user_can_chat">User Chat                  
+                      <input type="checkbox"  class="permission" name="user_can_chat" {% if user.user_can_chat == 1 %} checked='checked' value="true" {% else %} value="false" {% endif %}>                                                               
+                    </label> -->
+                <label for="is_deposit">Is Deposit
+                  <input type="checkbox" class="permission" name="is_deposit" {% if user.is_deposit == 1 %}
+                    checked='checked' value="true" {% else %} value="false" {% endif %}>
+                </label>
+                <label for="is_withdraw">Is Withdraw
+                  <input type="checkbox" class="permission" name="is_withdraw" {% if user.is_withdraw == 1 %}
+                    checked='checked' value="true" {% else %} value="false" {% endif %}>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="box-footer">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a href="/backend/user" class="btn btn-danger">Back</a>
+          </div>
+        </form>
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->
+{% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function () {
+    $("#editUserForm").validate({
+      rules: {
+        name: {
+          required: true,
+          maxlength: 25
+        },
+        email: {
+          required: true,
+          email: true,
+          remote: {
+            url: "/backend/user/checkDuplicate",
+            type: "POST",
+            data: { id: "{{user.id}}" }
+          }
+        },
+        password: {
+          required: true,
+          rangelength: [6, 20]
+        },
+        playpermission: {
+          required: false
+        }/*,
+      image:{
+        extension: "jpg|gif|png|jpeg" 
+      }*/
+      },
+      messages: {
+        name: {
+          required: "Please enter full name"
+        },
+        email: {
+          required: "Please enter email",
+          email: "Please enter valid email",
+          remote: "Email already exist"
+        },
+        password: {
+          required: "Please enter password",
+          rangelength: "Password length should be between 6 to 20 characters"
+        }/*,
+      image:{
+        extension :'Uploaded file is not a valid image. Only jpg, png, jpeg and gif files are allowed'
+      }*/
+      }
+    });
+  });
+
+  $('.permission').click(function () {
+    var checked = $(this).is(':checked');
+    // console.log("checked", checked);
+    if (checked == false) {
+      $(this).val(false);
+    }
+    else {
+      $(this).val(true);
+    }
+  });
+</script>
+{% endblock %}

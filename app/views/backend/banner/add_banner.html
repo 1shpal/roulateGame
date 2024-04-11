@@ -1,0 +1,235 @@
+{% extends "backend/partials/layout.njk" %}
+
+{% block style %}
+<style>
+  textarea {
+    resize: none;
+  }
+  .inputField{
+    padding: 8px;
+  }
+  label{
+    padding-top: 12px;
+  }
+</style>
+{% endblock %}
+
+
+{% block body %}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>{{title}}</h1>
+  <ol class="breadcrumb">
+    <li><a href="/backend/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li class="active">{{title}}</li>
+  </ol>
+</section>
+<!-- /.Content Header -->
+  <!-- Main content -->
+  <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+          </div>
+          <form action="/backend/banner/addBanner" method="post" enctype="multipart/form-data">
+            <div class="box-body table-responsive">
+              <div class="form-group">
+                <label for="title" class="col-md-3 control-label">Banner Title</label>
+                <div class="col-md-9 inputField">
+                  <input type="text" placeholder="Enter Banner Title" class="form-control" name="title" id="title">
+                </div>
+              </div>              
+              <div class="form-group">
+                <label for="benner_description" class="col-md-3 control-label">Banner Description</label>
+                <div class="col-md-9 inputField">
+                  <textarea class="form-control" placeholder="Banner Description" name="description" id="description"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="benner_image" class="col-md-3 control-label">Banner Image</label>
+                <div class="col-md-9 inputField">
+                  <input type="file" name="banner_image" id="banner_upload"  class="benner_upload" onchange="readURL(this);">
+                </div>
+              </div>              
+            </div>
+            <div class="box-footer">
+              <button type="submit" class="btn btn-primary">Add</button>
+              <a href="/backend" class="btn btn-danger">Back</a>
+            </div>
+          </form>
+        </div>        
+      </div>     
+    </div>    
+  </section>
+  <!-- /.content -->
+<!-- Main content -->
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title pull-left">All Banner</h3>
+          <div class="col-md-10"></div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive">
+            <table id="BannerTable" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Title</th>
+                  <th style="width: 50%;">Banner</th>
+                  <th>IsActive</th>
+                  <th>IsSingup</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+            </table>
+        </div>   
+      </div>
+    </div>
+  </div>
+</section>   
+  <!-- Modal -->
+  <div id="banner_edit_form" class="modal fade cutm_mdl" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit Banner</h4>
+        </div>
+        <div class="modal-body">
+            <form action="/backend/banner/bannerUpdte" method="post" enctype="multipart/form-data" id="bannetUpdate">
+              <input type="text" name="editid" id="editid" hidden>
+              <div class="form-group">
+                <label for="title" class="col-md-3 control-label">Banner Title</label>
+                <div class="col-md-9 inputField">
+                  <input type="text" placeholder="Enter Banner Title" class="form-control" name="edittitle" id="edittitle">
+                </div>
+              </div>  
+              <div class="form-group">
+                <label for="benner_description" class="col-md-3 control-label">Banner Description</label>
+                <div class="col-md-9 inputField">
+                  <textarea class="form-control" placeholder="Banner Description" name="editdescription" id="editdescription"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="editbanner_image" class="col-md-3 control-label">Banner Image</label>
+                <div class="col-md-9 inputField">
+                  <div class="col-md-6">
+                    <input type="file" name="editbanner_image" id="editbanner_image"  class="editbenner_upload">
+                  </div>
+                  <div class="col-md-6">
+                    <img  class="menu-img" style="width: 90%;" alt="Banner Image" id="editbanner_img">                
+                  </div>                  
+                </div>
+              </div>                
+              <div class="form-group">
+                <label for="active" class="col-md-3 control-label">IsActive</label>
+                <div class="col-md-9 inputField">
+                  <input type="checkbox" name="editis_active" id="editis_active">                            
+                </div>
+                <label for="active" class="col-md-3 control-label">SingUp Active</label>
+                <div class="col-md-9 inputField">
+                  <input type="checkbox" name="editis_login_image" id="editis_login_image" value="0">                            
+                </div>
+              </div>   
+                       
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+              </div>
+            </form>       
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        var host = window.location.origin;
+        $(document).ready(function () {
+        var host = window.location.origin;
+            $('#BannerTable').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "autoWidth": false,
+                "pageLength": 10,
+                "ajax": host + "/backend/banner/details",
+                "columns": [
+                { "data": "No" },
+                { "data": "title" },
+                { "data": "banner_image" },
+                { "data": "is_active" },
+                { "data": "is_login_image" },
+                { "data": "editDel"}
+                ]
+            });
+        });
+        //START Edit model Show 
+        function editBanner(id){            
+            $.get(host + "/backend/banner/detail/"+id, function(res){
+                if(res.status == 'success'){  
+                    var bannerData = res.data;
+                    // console.log("bannerData : ",bannerData);
+
+                    $("#editid").val(bannerData.id);                   
+                    $('#edittitle').val(bannerData.title);
+                    $('#editdescription').text(bannerData.description);                    
+                    $('#editbanner_img').attr("src","{{config.baseUrl}}frontend/upload/banner/"+bannerData.banner_image);                    
+                    if(bannerData.is_active == "0"){
+                        $('#editis_active').prop('checked', false);
+                        $('#editis_active').val('0');
+                    }else{
+                        $('#editis_active').prop('checked', true);     
+                        $('#editis_active').val('1');
+                    } 
+                    if(bannerData.is_login_image == "0"){
+                        $('#editis_login_image').prop('checked', false);
+                        $('#editis_login_image').val('0');
+                    }else{
+                        $('#editis_login_image').prop('checked', true);     
+                        $('#editis_login_image').val('1');
+                    }                                                                				
+                    $('#banner_edit_form').modal('show');
+                }else{
+                    $("#cardDetailModal .modal-body").html(res.message);				
+                }
+		    });
+        }   
+        $("#editis_active").click(function(){
+            let check = $(this).val();
+            if(check == '0'){
+                $(this).val('1');
+            }else{
+                $(this).val('0');
+            }
+        });
+        $("#editis_login_image").click(function(){
+            let check = $(this).val();
+            if(check == '0'){
+                $(this).val('1');
+            }else{
+                $(this).val('0');
+            }
+        });               
+        //END Edit model Show 
+    //     function readURL(input) {
+    //        if (input.files && input.files[0]) {
+    //            var reader = new FileReader();       
+    //            reader.onload = function (e) {
+    //                $('#banner_img')
+    //                    .attr('src', e.target.result);
+    //            };
+       
+    //            reader.readAsDataURL(input.files[0]);       
+    //            $('#banner_upload').submit();
+    //        }
+    //    }
+    </script>
+{% endblock %}

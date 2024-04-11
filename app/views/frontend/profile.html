@@ -1,0 +1,268 @@
+{% extends "frontend/partials/layout.njk" %}
+{% block body %}
+<div class="col-lg-12 col-md-12">
+    <div class="inner_content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="p-rel">
+                    <h2 class="page-title">Profile</h2>
+                </div>
+                <form class="form-horizontal" id="profileFrm" action="{{config.baseUrl}}profile/save" method="POST">
+                    <div class="inputstyle-1">
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <label>
+                                    <input id="name" class="input-focus input-ani" type="text" placeholder="Name"
+                                        name="pro_name" value="{{detail.name}}">
+                                    <span>Username </span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <label>
+                                    <input id="email" class="input-focus input-ani" type="email" placeholder="Email"
+                                        name="pro_email" value="{{detail.email_id}}">
+                                    <span>Email </span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <select class="game_list_menu">
+                                    <option value="btc" selected>BTC</option>
+                                    <option value="eth">ETH</option>
+                                    <option value="ltc">LTC</option>
+                                    <option value="doge">DOGE</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <label class="coinName"></label>
+                                <label>
+                                    <input class="input-focus input-ani txtaddress" type="text"
+                                        placeholder="Currency Address">
+                                    <button type="button" class="wedhrow_btn wallettAddreess">Add</button>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <!-- <label>
+                                        <input id="pro_password" class="input-focus input-ani" type="password" placeholder="If you change password?" name="pro_password">
+                                        <span>Password</span>
+                                    </label> -->
+                                <label>Change password? <a href="{{config.baseUrl}}profile/change/password"> Click
+                                        here</a></label>
+
+                            </div>
+                        </div>
+                        <!-- <input type="text" hidden class="isselectbox" name="isanymos" value="{{detail.anymos}}">
+                            <input type="checkbox" id="myCheckbox" name="checkbox" data-val= {{detail.anymos}} {% if detail.anymos == 1 %} checked='checked' {% else %}  {% endif %} class="checkbox1" value="">  Anonymous -->
+
+                        <div class="clearfix"></div>
+                        <div class="col-md-12">
+                            <div class="form-group profile-pic-select">
+                                <label for="">profile Picture</label>
+                                <div class="radio radio-info radio-inline">
+                                    <input type="radio" id="inlineRadio1" value="profile-user-1.png" name="pro_image" {%
+                                        if(detail.profile_image=="profile-user-1.png" ) %} checked {% endif %}>
+                                    <label for="inlineRadio1">
+                                        <img src="{{config.baseUrl}}frontend/upload/user/profile-user-1.png"
+                                            class="menu-img">
+                                    </label>
+                                </div>
+                                <div class="radio radio-inline">
+                                    <input type="radio" id="inlineRadio2" value="profile-user-2.png" name="pro_image" {%
+                                        if(detail.profile_image=="profile-user-2.png" ) %} checked {% endif %}>
+                                    <label for="inlineRadio2">
+                                        <img src="{{config.baseUrl}}frontend/upload/user/profile-user-2.png"
+                                            class="menu-img">
+                                    </label>
+                                </div>
+                                <div class="radio radio-info radio-inline">
+                                    <input type="radio" id="inlineRadio3" value="profile-user-3.png" name="pro_image" {%
+                                        if(detail.profile_image=="profile-user-3.png" ) %} checked {% endif %}>
+                                    <label for="inlineRadio3">
+                                        <img src="{{config.baseUrl}}frontend/upload/user/profile-user-3.png"
+                                            class="menu-img">
+                                    </label>
+                                </div>
+                                <div class="radio radio-inline">
+                                    <input type="radio" id="inlineRadio4" value="profile-user-4.png" name="pro_image" {%
+                                        if(detail.profile_image=="profile-user-4.png" ) %} checked {% endif %}>
+                                    <label for="inlineRadio4">
+                                        <img src="{{config.baseUrl}}frontend/upload/user/profile-user-4.png"
+                                            class="menu-img">
+                                    </label>
+                                </div>
+                                <div class="radio radio-info radio-inline">
+                                    <input type="radio" id="inlineRadio5" value="profile-user-5.png" name="pro_image" {%
+                                        if(detail.profile_image=="profile-user-5.png" ) %} checked {% endif %}>
+                                    <label for="inlineRadio5">
+                                        <img src="{{config.baseUrl}}frontend/upload/user/profile-user-5.png"
+                                            class="menu-img">
+                                    </label>
+                                </div>
+                                <div class="radio radio-inline">
+                                    <input type="radio" id="inlineRadio6" value="profile-user-6.png" name="pro_image" {%
+                                        if(detail.profile_image=="profile-user-6.png" ) %} checked {% endif %}>
+                                    <label for="inlineRadio6">
+                                        <img src="{{config.baseUrl}}frontend/upload/user/profile-user-6.png"
+                                            class="menu-img">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" text-center">
+                            <button type="submit" class="btn-blue text-uppercase login-btn col-md-5">Save</button>
+                            <a href="{{config.baseUrl}}"
+                                class="btn-blue-brder text-uppercase login-btn col-md-5 col-md-offset-2">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <div class="profile-info">
+                    <div class="user-img">
+                        <span>Upload Profile<br>Image</span>
+                        <form action="{{config.baseUrl}}profile/image" method="POST" id="image_upload"
+                            enctype="multipart/form-data">
+                            <input type="file" name="profile_image" class="pic-upload" onchange="readURL(this);">
+                            <img src="{{config.baseUrl}}frontend/upload/user/{{detail.profile_image}}" class="menu-img"
+                                alt="Profile Image" id="prof_img">
+                        </form>
+                    </div>
+                    <!--form class="form-horizontal">
+                            <div class="inputstyle-1">
+                                <div class="form-group">
+                                    <div class="col-md-10 col-md-offset-1">
+                                        <div class="input-group-cst">
+                                            <label>
+                                                <input id="" class="input-focus input-ani" type="text" placeholder="Referral Code">
+                                                <span>Referral Code </span>
+                                            </label>
+                                            <button class="btn-blue text-uppercase copy-btn ">Copy</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form-->
+                    <div class="clearfix"></div>
+                    <div class="">
+                        <div class="bal-detail">
+                            <h4>Balance Detail</h4>
+                            <div class="col-md-6 pt-2">
+                                <!-- <h3 class="prox-b f-s-18">Balance                                                                 
+                                        <span class="user_deposite_balance"></span>
+                                        <img class="coinimg">
+                                    </h3> -->
+                            </div>
+                            <div class="bal-box">
+                                <div class="avlbl-bal text-center">
+                                    <p>Available balance</p>
+                                    <table class="table_balens">
+                                        <!-- <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Name</th>
+                                                        <th>Total Amount</th>
+                                                    </tr>                                                 -->
+                                        </thead>
+                                        <tbody class="allcurrencyBody">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="bal-list">
+                                    <!--p class="light-gray-text">Total Deposit:-    
+                                            <span class="text-black"> {{detail.total_deposite}}</span>
+                                        </p>
+                                        <p class="light-gray-text">Total Withdraw:-   
+                                            <span class="text-black"> {{detail.total_withdraw}}</span>
+                                        </p-->
+                                    <!-- <p class="dark-blue-text">Total Wagered:-    
+                                            <span> {{detail.total_win_amount}}</span>
+                                        </p> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            var image = input.files[0]['name'];
+
+            var image_regex = /^.*\.(jpeg|JPEG|png|jpe|JPG|jpg|JPE)$/;
+            if (!image_regex.test(image)) {
+                $.toast({ heading: 'Error', text: "Only Image File Are Accepted.", position: 'top-right', icon: 'error', stack: false });
+                return false;
+            }
+            reader.onload = function (e) {
+                $('#prof_img')
+                    .attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+
+            $('#image_upload').submit();
+        }
+    }
+
+
+</script>
+
+<script>
+    $('#myCheckbox').click(function () {
+        var checked = $(this).is(':checked');
+        if (checked == false) {
+            $(this).attr('value', 0);
+            $(".isselectbox").val('0');
+        }
+        else {
+            $(this).attr('value', 1);
+            $(".isselectbox").val('1');
+        }
+    });
+    $(document).ready(function () {
+        let coinName = $(".game_list_menu option:selected").text();
+        $(".coinName").text(coinName + " Address");
+        $(".txtaddress").val("{{detail.btc_currency_address}}");
+    });
+    $(".game_list_menu").change(function () {
+        let coinName = $(".game_list_menu option:selected").text();
+        var query = '';
+        if (coinName == "BTC") {
+            query = "{{detail.btc_currency_address}}";
+        } else if (coinName == "ETH") {
+            query = "{{detail.eth_currency_address}}";
+        } else if (coinName == "LTC") {
+            query = "{{detail.ltc_currency_address}}";
+        } else if (coinName == "DOGE") {
+            query = "{{detail.doge_currency_addres}}";
+        } else if (coinName == "BCH") {
+            query = "{{detail.bch_currency_address}}";
+        }
+
+        $(".txtaddress").val(query);
+        $(".coinName").text(coinName + " Address");
+    });
+
+</script>
+<script type="text/javascript" src="{{config.baseUrl}}frontend/script/validation/profile.js"></script>
+<script type="text/javascript" src="{{config.baseUrl}}frontend/script/cryptoCurrency.js"></script>
+{% endblock %}

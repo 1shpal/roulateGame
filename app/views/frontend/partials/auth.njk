@@ -1,0 +1,173 @@
+<div class="modal fade login-register-modal" id="login-register-modal" tabindex="-1" role="dialog"
+    aria-labelledby="login-register-modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-5 p-l-r-0">
+                            <div class="left-section" style="">
+                                <!-- <div class="top-logo">
+                                    <a href="{{config.baseUrl}}">
+                                        <img src="{{config.baseUrl}}frontend/img/logo.png" alt="logo" class="w-100">
+                                    </a>
+                                </div>
+                                <div class="middle-txt">
+                                    <h3>{{loginBanner.title }}</h3>
+                                    <p>
+                                        {{loginBanner.description }}
+                                    </p>
+                                </div> -->
+                                <div class="bottom-txt">
+                                    <h2>Login</h2>
+                                    <p>Sign in to make bets</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 p-l-r-0">
+                            <div class="right-section">
+                                <div class="card">
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li role="presentation" class="active">
+                                            <a href="#sign-in" aria-controls="sign-in" role="tab" data-toggle="tab">sign
+                                                in</a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="#register" aria-controls="register" role="tab"
+                                                data-toggle="tab">sign up</a>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content">
+                                        <div role="tabpanel" class="tab-pane active" id="sign-in">
+                                            <form class="form-horizontal sign-in-form" id="loginFrm" method="POST"
+                                                action="{{config.baseUrl}}login">
+                                                <div class="inputstyle-1">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input id="login_email_id" class="input-focus input-ani"
+                                                                    type="email" name="login_email_id"
+                                                                    placeholder="Email Address"
+                                                                    value="{{auth.remember.emailId}}">
+                                                                <span>Email Address </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input id="login_password" class="input-focus input-ani"
+                                                                    type="password" name="login_password"
+                                                                    placeholder="Password"
+                                                                    value="{{auth.remember.password}}">
+                                                                <span>Password</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="foot-link">
+                                                        <div class="pull-left">
+                                                            <div class="checkbox">
+                                                                <input id="checkbox1" type="checkbox" name="remember"
+                                                                    {% if(auth.remember.emailId) %} checked {% endif %}>
+                                                                <label for="checkbox1">
+                                                                    Remember me
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="pull-right">
+                                                            <a href="/forget" class="link-btn">
+                                                                Forgot Password?
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button type="submit"
+                                                            class="btn-blue text-uppercase login-btn">Login</a>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="register">
+                                            <form class="form-horizontal" id="registerFrm" method="POST"
+                                                action="{{config.baseUrl}}register">
+                                                <div class="inputstyle-1">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input id="full_name"
+                                                                    class="input-focus input-ani user_nametxt"
+                                                                    type="text" name="full_name" placeholder="Username">
+                                                                <span>Username </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input id="email_id" class="input-focus input-ani"
+                                                                    type="email" name="email_id"
+                                                                    placeholder="email address">
+                                                                <span>email address</span>
+                                                            </label>
+                                                            <label class="emailRegister">Email only used for password
+                                                                recovery</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input id="password" class="input-focus input-ani"
+                                                                    type="password" name="password"
+                                                                    placeholder="password">
+                                                                <span>password</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input id="confirm_password"
+                                                                    class="input-focus input-ani" type="password"
+                                                                    name="confirm_password"
+                                                                    placeholder="re-enter password">
+                                                                <span>re-enter password</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="foot-link">
+                                                        <div class="pull-left">
+                                                            <div class="checkbox">
+                                                                <input id="checkbox2" type="checkbox"
+                                                                    name="terms_condition">
+                                                                <label for="checkbox2">
+                                                                    <a href="/term-and-condition" target="_blank">Yes,i
+                                                                        have read and
+                                                                        accept the terms and privacy
+                                                                        policy</a>
+                                                                </label>
+                                                                <label id="terms_condition-error" class="error"
+                                                                    for="terms_condition"
+                                                                    style="display: none;"></label>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <button type="submit"
+                                                            class="btn-blue text-uppercase login-btn">Register</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>

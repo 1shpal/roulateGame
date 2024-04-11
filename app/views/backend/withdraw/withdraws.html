@@ -1,0 +1,122 @@
+{% extends "backend/partials/layout.njk" %}
+
+{% block body %}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>{{title}}</h1>
+  <ol class="breadcrumb">
+    <li><a href="/backend/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li class="active">Withdraw Master</li>
+  </ol>
+</section>
+<!-- /.Content Header -->
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title pull-left">All Withdraw</h3>
+          <div class="col-md-10"></div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive">
+          <table id="withdrawHistory" class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Coin</th>
+                <th>Coin Type</th>
+                <th>Transaction Id</th>
+                <th>Status</th>
+                <th>Transaction Date</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->
+
+{% endblock %}
+
+{% block script %}
+<!-- page script -->
+<script>
+  var host = window.location.origin;
+  var url = host + "/backend/getWithdraws"
+  var withdrawHistory = "";
+  datatableDraw(url);
+  function datatableDraw(url) {
+    withdrawHistory = $('#withdrawHistory').DataTable({
+      "language": {
+        searchPlaceholder: "Search Transaction"
+      },
+      "processing": true,
+      "serverSide": true,
+      "destroy": true,
+      "responsive": true,
+      "searching": true,
+      "ordering": true,
+      "autoWidth": false,
+      "lengthMenu": [10, 25, 50, 100, 200, 500, 1000],
+      "pageLength": 10,
+      "fixedHeader": {
+        header: true
+      },
+      "order": [["5", "desc"]],
+      "columnDefs": [
+        {
+          "targets": [0],
+          "orderable": false,
+          "searching": true,
+        },
+      ],
+      "ajax": {
+        url: url,
+        "dataSrc": function (successData) {
+          return successData.data;
+        }
+      },
+      "columns": [
+        {
+          "data": "name", "render": (data, type, row) => {
+            return row["userDetail.name"];
+          }
+        },
+        {
+          "data": "withdrawAmout"
+        },
+        {
+          "data": "coin_type", render: (data, type, row) => {
+            return `<img src="/backend/img/` + row.coin_type + `.svg">`
+          }
+        },
+        { "data": "transaction_id" },
+        {
+          "data": "status", "render": (data, type, row) => {
+            if (row.status == "success") {
+              return `<td><span class="text-success">Success</span></td>`;
+            } else if (row.is_won == "failed") {
+              return `<td><span class="text-danger">Failed</span></td>`;
+            } else {
+              return `<td><span class="text-info">Pending</span></td>`;
+            }
+          }
+        },
+        {
+          "data": "transaction_date", "render": (data, type, row) => {
+            return moment(row.transaction_date).utc().format("DD-MM-YYYY");
+          }
+        }
+      ]
+    });
+  }
+</script>
+{% endblock %}

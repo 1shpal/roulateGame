@@ -1,0 +1,219 @@
+{% extends "frontend/partials/home_layout.njk" %}
+{% block body %}
+<div class="content-wrapper">
+	<section class="login-banner-section">
+		<div class="banner-pos">
+			<div class="bs-example">
+				<div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+					<!-- Carousel indicators -->
+					<ol class="carousel-indicators">
+						{% for bennrs in bannerData %}
+						{% if(loop.index0 == '0') %}
+						<li data-target="#myCarousel" data-slide-to="{{loop.index0}}" class="active"></li>
+						{% else %}
+						<li data-target="#myCarousel" data-slide-to="{{loop.index0}}"></li>
+						{% endif %}
+						{% endfor %}
+					</ol>
+					<!-- Wrapper for carousel items -->
+					<div class="carousel-inner">
+						{% for bennrs in bannerData %}
+						{% if(loop.index == '1') %}
+						<div class="item active">
+							<img src="{{config.baseUrl}}frontend/upload/banner/{{bennrs.banner_image}}">
+						</div>
+						{% else %}
+						<div class="item">
+							<img src="{{config.baseUrl}}frontend/upload/banner/{{bennrs.banner_image}}">
+						</div>
+						{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="content home-content container-fluid">
+		<div class="col-lg-12 col-md-12 full-width">
+			<div class="inner_content">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="bg-white home-tab">
+							<div class="border_styles">
+								<div class="row">
+									<div class="col-md-8">
+										<ul class="nav nav-tabs" role="tablist">
+											<li role="presentation" class="active">
+												<a href="#total" aria-controls="total" role="tab" data-toggle="tab"
+													class="btn-blue text-uppercase">Games</a>
+											</li>
+										</ul>
+									</div>
+
+									<div class="col-md-4">
+										{% if(auth.user.id == undefine) %}
+										<div class="btn_sign">
+											<a href="#login-register-modal" data-toggle="modal"
+												class="btn-blue-brder text-uppercase btn_hover_eft btn_border_efect">Signin/Signup</a>
+										</div>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+							<div class="tab-content">
+								<div role="tabpanel" class="tab-pane active" id="total">
+									<div class="bg-white home-box">
+										<div class="home-game-blocks">
+											<div class="col-md-3 col-sm-6 col-xs-12 text-left sm-text-center">
+												<figure class="imgbox">
+													<img src="{{config.baseUrl}}frontend/img/lighting-roulette-game-bg-1.png"
+														alt="sample20" />
+													<figcaption>
+														<div class="left">
+															<h3>Lightning <br>Roulette</h3>
+														</div>
+														<div class="right">
+															<h3 class="">play</h3>
+														</div>
+													</figcaption>
+													<div class="center">
+														<i class="game-icons-roulette-wheel"></i>
+													</div>
+													<a href="{{config.baseUrl}}lighting-roulette">
+														<span class="gamename">Lightning <br>Roulette</span>
+														<span class="edgeinfo">Edge 1.0%</span>
+													</a>
+												</figure>
+											</div>
+											<div class="col-md-3 col-sm-6 col-xs-12 text-left sm-text-center">
+												<figure class="imgbox">
+													<img src="{{config.baseUrl}}frontend/img/comming-soon-game-bg-1.png"
+														alt="sample20" />
+													<figcaption>
+														<div class="left">
+															<h3>Coming <br>Soon</h3>
+														</div>
+														<div class="right">
+															<h3 class="">play</h3>
+														</div>
+													</figcaption>
+													<div class="center"><i class="fa fa-gamepad"></i></div>
+													<a href="javascript:;">
+														<span class="gamename">Coming Soon</span>
+													</a>
+												</figure>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12 text-center">
+
+						<!--  <div class="heading">
+                                        <p> all currency accepting</p>
+                                        <span class="heading-overlay"></span>
+									</div> -->
+						{% if(auth.user.id == undefine) %}
+						<div class="Hover_compins">
+							<a href="#login-register-modal" data-toggle="modal"
+								class="btn-blue-brder text-uppercase btn_hover_eft btn_transt">Signin/Signup</a>
+						</div>
+						{% endif %}
+
+					</div>
+					<div class="col-md-12 p-t-30">
+						<div class="bg-white home-tab win-user-list">
+							<div class="col-md-4">
+								<div class="user-detail">
+									<h4>Recent Winners</h4>
+									<!--    <div class="m-t-b-10 p-rel d-inline-block w-full"> -->
+									<ul class="recentWinners bitroul_text" id="recentWinners">
+									</ul>
+									<!-- </div>  -->
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="user-detail">
+									<h4>Big Winners</h4>
+									<!--    <div class="m-t-b-10 p-rel d-inline-block w-full"> -->
+									<ul class="bigWinners bitroul_text" id="bigWinners">
+										</u>
+										<!--  </div>    -->
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="user-detail">
+									<h4>Jackpot Winners</h4>
+									<!--  <div class="m-t-b-10 p-rel d-inline-block w-full"> -->
+									<ul class="homejackpotwinners bitroul_text" id="homejackpotwinners">
+									</ul>
+									<!--  </div>    -->
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-12">
+						<div class="foot-nav text-center">
+							<ul class="list-unstyled list-inline">
+								<li>
+									<a href="{{config.baseUrl}}provably-fair">
+										<span>
+											<img src="{{config.baseUrl}}frontend/img/home-footer-icon-1.png" alt="">
+										</span>
+										Provably Fair
+									</a>
+								</li>
+								<li class="hidden-xs">|</li>
+								<li>
+									<a href="">
+										<span>
+											<img src="{{config.baseUrl}}frontend/img/home-footer-icon-2.png" alt="">
+										</span>
+										Instant no Confirmation deposits and withdrawls
+									</a>
+								</li>
+								<li class="hidden-xs">|</li>
+								<li>
+									<a href="">
+										<span>
+											<img src="{{config.baseUrl}}frontend/img/home-footer-icon-3.png" alt="">
+										</span>
+										About Games
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-md-12 text-center">
+						<div class="col-md-5 all-currency-list-top">
+							<div class="bg-white all-currency-list">
+								<div class="heading">
+									<p> <span class="all-currencies">5</span> Currencies Accepted</p>
+									<span class="heading-overlay"></span>
+								</div>
+								<ul class="list-inline list-unstyled currency-list">
+									<li data-toggle="tooltip" title="BTC" data-placement="top"><img
+											src="{{config.baseUrl}}frontend/img/btc.svg" alt="bitcoin-icon"></li>
+									<li data-toggle="tooltip" title="ETH" data-placement="top"><img
+											src="{{config.baseUrl}}frontend/img/eth.svg" alt="bitcoin-icon"></li>
+									<li data-toggle="tooltip" title="LTC" data-placement="top"><img
+											src="{{config.baseUrl}}frontend/img/ltc.svg" alt="bitcoin-icon"></li>
+									<li data-toggle="tooltip" title="DOGE" data-placement="top"><img
+											src="{{config.baseUrl}}frontend/img/doge.svg" alt="bitcoin-icon"></li>
+									<li data-toggle="tooltip" title="BCH" data-placement="top"><img
+											src="{{config.baseUrl}}frontend/img/bch.svg" alt="bitcoin-icon"></li>
+									<!-- <li><a href=""><img src="{{config.baseUrl}}frontend/img/bitcoin-icon-6.png" alt="bitcoin-icon"></a></li> -->
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+{% endblock %}

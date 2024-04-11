@@ -1,0 +1,139 @@
+{% extends "frontend/partials/layout.njk" %}
+{% block body %}
+<div class="col-lg-12 col-md-12">
+    <div class="inner_content">
+        <div class="bg-white inner-padding">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="prov_tab">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#deposit">Deposit</a></li>
+                            <li><a data-toggle="tab" href="#deposit-history">Deposit History</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="deposit" role="tabpanel"
+                                aria-labelledby="v-pills-deposit-history-tab">
+                                <div class="card  procrash-bg-border">
+                                    <!-- <div class="card-header">
+                                            <h4 class="prox-b f-s-18 mb-0">Deposit</h4>
+                                        </div> -->
+                                    <div class="card-body">
+                                        <form action="{{config.baseUrl}}deposit/coin" class="form-horizontal">
+                                            <div class="">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <input type="number" title="" step="0.00000001"
+                                                            class="form-control input_deposit"
+                                                            placeholder="Enter Deposit Amount" id="deposit_coin">
+                                                        <!-- <div class="help-block"></div> -->
+                                                        <!-- <span class="check_message text-danger"></span> -->
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button type="button"
+                                                        class="wedhrow_btn coin_deposit_btn">Deposit</button>
+                                                </div>
+                                                <div class="col-md-6 pt-2">
+                                                    <img class="deposit-loding desplay-none"
+                                                        src="{{config.baseUrl}}frontend/img/loading.gif" alt=""
+                                                        srcset="">
+                                                </div>
+                                                <div class="col-md-6 pt-2 show_balance">
+                                                    <!-- <h3 class="prox-b f-s-18">Balance :                                                                
+                                                            <span class="user_deposite_balance"></span>
+                                                            <img class="coinimg">
+                                                        </h3> -->
+                                                </div>
+                                            </div>
+                                            <div class="clearfix p-2"></div>
+                                            <div class="row deposite_currency_list">
+                                                {% for currency in UserWalletdata %}
+                                                {% if(currency.currencyDetail.currency_name != 'ROUL1') %}
+                                                <div class="col-md-4">
+                                                    <a href="javascript:void(0);" class="depo">
+                                                        <input type="radio" name="depositcoin"
+                                                            class="check_dep depositcoin">
+                                                        <div class="pay-box" for="radio1">
+                                                            {{currency.currencyDetail.currency_name}}
+                                                            <div class="g2a-pay">
+                                                                <img src="{{baseUrl}}frontend/img/{{currency.currencyDetail.currency_image}}"
+                                                                    alt="{{currency.currencyDetail.currency_name | lower}}"
+                                                                    height="40" width="40">
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                {% endif %}
+                                                {% endfor%}
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="deposit-history" role="tabpanel"
+                                aria-labelledby="v-pills-bet-history-tab">
+                                <div class="card  procrash-bg-border">
+                                    <!-- <div class="card-header">
+                                            <h4 class="prox-b f-s-18 mb-0">Deposit History</h4>
+                                        </div> -->
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 pt-2 pb-0">
+                                                <div class="table-responsive">
+                                                    <table id="bet_history_table" class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No.</th>
+                                                                <th>Transaction Id</th>
+                                                                <th>Coin</th>
+                                                                <th>Currency Type</th>
+                                                                <th>Status</th>
+                                                                <th>Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block popup%}
+<button style="display:none;" id="qr_model" data-toggle="modal" data-target="#bitcoin_qr_modal"></button>
+<div class="modal" id="bitcoin_qr_modal" tabindex="-1" role="dialog" aria-labelledby="bitcoin_modal_modal"
+    aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content bg-inverse ">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="row">
+                    <div class="text-center qr_code_div">
+                        <img src="" class="coin_qr_code"><br />
+                        <label class="coin_name_code">
+                            <span class="deposit_add"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}
+{% block script %}
+<script src="{{config.baseUrl}}frontend/js/jquery.dataTables.min.js"></script>
+<script src="{{config.baseUrl}}frontend/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="{{config.baseUrl}}build/roule.wallet.min.js"></script>
+<script type="text/javascript" src="{{config.baseUrl}}frontend/script/cryptoCurrency.js"></script>
+<script type="text/javascript" src="{{config.baseUrl}}frontend/script/history.js"></script>
+{% endblock %}

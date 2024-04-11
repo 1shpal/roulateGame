@@ -1,0 +1,118 @@
+<aside class="main-sidebar">
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar">
+    <!-- sidebar menu: : style can be found in sidebar.less -->
+    <ul class="sidebar-menu" data-widget="tree">
+      <li>
+        <a href="{{config.baseUrl}}provably-fair">
+          <img src="{{config.baseUrl}}frontend/img/menu-help-white.png" class="menu-img">
+          <img src="{{config.baseUrl}}frontend/img/menu-help.png" class="menu-img-active"> <span>Provably fair</span>
+        </a>
+      </li>
+      <li class="hidden-md hidden-lg">
+        <a href="{{config.baseUrl}}deposit">
+          <img src="{{config.baseUrl}}frontend/img/deposit-white.png" class="menu-img">
+          <img src="{{config.baseUrl}}frontend/img/deposit-gray.png" class="menu-img-active">
+          <span>Deposit</span>
+        </a>
+      </li>
+      <li class="hidden-md hidden-lg">
+        <a href="{{config.baseUrl}}withdraw">
+          <img src="{{config.baseUrl}}frontend/img/withdraw-white.png" class="menu-img">
+          <img src="{{config.baseUrl}}frontend/img/withdraw-gray.png" class="menu-img-active">
+          <span>Withdraw</span>
+        </a>
+      </li>
+      <!-- <li class="hidden-md hidden-lg">
+        <a href="javascript:void();">
+          <img src="{{config.baseUrl}}frontend/img/help-white.png" class="menu-img">
+          <img src="{{config.baseUrl}}frontend/img/help-gray.png" class="menu-img-active">
+          <span>Help</span>
+        </a>
+      </li> -->
+      {% if auth.user == undefined %}
+      <li>
+        <a href="#login-register-modal" data-toggle="modal" class="text-uppercase">
+          <img src="{{config.baseUrl}}frontend/img/add-user-white.png" class="menu-img">
+          <img src="{{config.baseUrl}}frontend/img/add-user-gray.png" class="menu-img-active">
+          <span>Signin/Signup</span>
+        </a>
+      </li>
+      {% endif %}
+      {% if auth.user.id %}
+      <li class="treeview {% if(alias == " account") %} menu-open{% endif %}">
+        <a href="{{config.baseUrl}}">
+          <img src="{{config.baseUrl}}frontend/img/add-user-white.png" class="menu-img">
+          <img src="{{config.baseUrl}}frontend/img/add-user-gray.png" class="menu-img-active">
+          <span>Account</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu" {% if(alias=="account" ) %} style="display:block;" {% endif %}>
+          <li {% if(subAlias=="profile" ) %} class="active" {% endif %}>
+            <a href="{{config.baseUrl}}profile">
+              <img src="{{config.baseUrl}}frontend/img/user-white.png" class="menu-img-active">
+              Profile
+            </a>
+          </li>
+          <li {% if(subAlias=="betHistory" ) %} class="active" {% endif %}>
+            <a href="{{config.baseUrl}}history">
+              <img src="{{config.baseUrl}}frontend/img/history-white-2.png" class="menu-img-active">
+              Bet History
+            </a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+      {% if auth.user.id %}
+      <li>
+        <a href="{{config.baseUrl}}logout">
+          <img src="{{config.baseUrl}}frontend/img/signout-white.png" class="menu-img">
+          <img src="{{config.baseUrl}}frontend/img/signout-gray.png" class="menu-img-active">
+          <span>Logout</span>
+        </a>
+      </li>
+      {% elif auth.guest.id %}
+      <li>
+        <a href="{{config.baseUrl}}guest/logout">
+          <img src="{{config.baseUrl}}frontend/img/signout-white.png" class="menu-img">
+          <img src="{{config.baseUrl}}frontend/img/signout-gray.png" class="menu-img-active">
+          <span>Logout</span>
+        </a>
+      </li>
+      {% endif %}
+      <li>
+        <ul class="foo-link">
+          <li>
+            <a href="{{config.baseUrl}}term-and-condition">T &amp; C</a>
+          </li>
+          <!-- <li>
+            <a href="{{config.baseUrl}}help">Help</a>
+          </li> -->
+          <li>
+            <a href="{{config.baseUrl}}faq-page">FAQ</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <div class="spin-drop w-btn  side-plus ">
+          <button class="same-bet dropdown-toggle" type="button" data-toggle="dropdown"><i
+              class="fa fa-plus"></i></button>
+          <ul class="dropdown-p">
+            {% for icm in getCMS %}
+            <li><a href="{{config.baseUrl}}blogs/{{icm.title}}">{{icm.title}}</a></li>
+            {% endfor %}
+
+            <!-- <li><a href="javascript:void();">TURBO SPIN</a></li>
+            <li><a href="javascript:void();">demo</a></li> -->
+          </ul>
+        </div>
+      </li>
+      <li class="copyright">
+        <div class="copyright-text">Copyright@2021, BitRoul.com all rights reserved</div>
+      </li>
+    </ul>
+  </section>
+  <!-- /.sidebar -->
+</aside>

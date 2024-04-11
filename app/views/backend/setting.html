@@ -1,0 +1,147 @@
+{% extends "backend/partials/layout.njk" %}
+
+{% block style %}
+<style>
+  .inputField {
+    padding: 8px;
+  }
+
+  label {
+    padding-top: 12px;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>{{title}}</h1>
+  <ol class="breadcrumb">
+    <li><a href="/backend/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li>Profile</li>
+  </ol>
+</section>
+<!-- /.Content Header -->
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-8">
+      <div class="box box-primary">
+        <div class="box-header with-border"></div>
+        <form id="settingForm" role="form" method="post" action="/backend/setting/update">
+          <div class="box-body">
+            <div class="form-group">
+              <label for="roulette_commission" class="col-md-4 control-label">Roulette Commission</label>
+              <div class="col-md-8 inputField">
+                <input type="text" placeholder="Roulette commission in percentage" class="form-control"
+                  name="roulette_commission" id="roulette_commission" pattern="^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$" title="The input value is invalid. Please enter the commission in percentage"
+                  value="{{setting.roulette_commission}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="maximumBetLimit" class="col-md-4 control-label">Maximum Gain Limit</label>
+              <div class="col-md-8 inputField">
+                <input type="text" placeholder="Roulette commission in percentage" class="form-control"
+                  name="maximumBetLimit" id="maximumBetLimit" value="{{setting.maximumBetLimit}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="landingHeaderTxt" class="col-md-4 control-label">Landing Page Header Text</label>
+              <div class="col-md-8 inputField">
+                <input type="text" placeholder="Landing Page Header Text" class="form-control" name="landingHeaderTxt"
+                  id="landingHeaderTxt" value="{{setting.landingHeaderTxt}}" minlength="4" maxlength="100" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="landingBodyTxt" class="col-md-4 control-label">Landing Page Body Text</label>
+              <div class="col-md-8 inputField">
+                <input type="text" placeholder="Landing Page Body Text" class="form-control" name="landingBodyTxt"
+                  id="landingBodyTxt" value="{{setting.landingBodyTxt}}" minlength="4" maxlength="250" required>
+              </div>
+            </div>
+            <!-- <div class="form-group">
+              <label for="facebook_link" class="col-md-4 control-label">Facebook Link</label>
+              <div class="col-md-8 inputField">
+                <input type="text" placeholder="Facebook Link" class="form-control" name="facebook_link"
+                  id="facebook_link" value="{{setting.facebook_link}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="twitter_link" class="col-md-4 control-label">Twitter Link</label>
+              <div class="col-md-8 inputField">
+                <input type="text" placeholder="Twitter Link" class="form-control" name="twitter_link" id="twitter_link"
+                  value="{{setting.twitter_link}}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="steam_link" class="col-md-4 control-label">Steam Link</label>
+              <div class="col-md-8 inputField">
+                <input type="text" placeholder="Steam Link" class="form-control" name="steam_link" id="steam_link"
+                  value="{{setting.steam_link}}">
+              </div>
+            </div> -->
+          </div>
+          <div class="box-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+      <!-- /.box -->
+    </div>
+
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->
+{% endblock %}
+
+{% block script %}
+<script>
+  let str = document.getElementById("landingHeaderTxt").value; 
+  console.log('str --->', str);
+  document.getElementById("landingHeaderTxt").value = str.replace(/&nbsp/g,' ');
+
+  let str2 = document.getElementById("landingBodyTxt").value; 
+  console.log('str2 --->', str2);
+  document.getElementById("landingBodyTxt").value = str2.replace(/&nbsp/g,' ');
+
+  $(document).ready(function () {
+    $("#settingForm").validate({
+      rules: {
+        roulette_commission: {
+          required: true
+        },
+        maximumBetLimit: {
+          required: true
+        },
+        landingHeaderTxt: {
+          required: true
+        },
+        landingBodyTxt: {
+          required: true
+        }
+      },
+      messages: {
+        roulette_commission: {
+          required: "Please enter Roulette Commission"
+        },
+        maximumBetLimit: {
+          required: "Please enter maximum gain limit"
+        },
+        landingHeaderTxt: {
+          required: "Please enter langing page title name",
+          minlength: "Minimum 4 character allow in header text",
+          maxlength: "Maximum 100 character allow in header text"
+        },
+        landingBodyTxt: {
+          required: "Please enter langing page body text",
+          minlength: "Minimum 4 character allow in body text",
+          maxlength: "Maximum 250 character allow in body text"
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}

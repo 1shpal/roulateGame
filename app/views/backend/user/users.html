@@ -1,0 +1,224 @@
+{% extends "backend/partials/layout.njk" %}
+
+{% block body %}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>{{title}}</h1>
+  <ol class="breadcrumb">
+    <li><a href="/backend/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li class="active">User Master</li>
+  </ol>
+</section>
+<!-- /.Content Header -->
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <!-- <h3 class="box-title pull-left">All User</h3> -->
+          <div class="col-md-10"></div>
+          {# <div class="col-md-2 pull-right">
+            <a href="/backend/user/add" class="btn btn-block btn-primary">
+              <i class="fa fa-user-plus"></i> Add User
+            </a>
+          </div> #}
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive">
+          <table id="userTable" class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Creation</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>IP address</th>
+                <th>BTC</th>
+                <th>ETH</th>
+                <th>LTC</th>
+                <th>DOGE</th>
+                <th>ROUL1</th>
+                <th>Device</th>
+                <th>Image</th>
+                <th>Status</th>
+                <th>Last Loging </th>
+                <th>Action</th>
+              </tr>
+            </thead>
+          </table>
+          <div class="col-sm-2 pull-right m-t-b-10 jumpIn" id="page-jump">
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" placeholder="Enter the Page Number" id="page_input">
+              <span class="input-group-btn">
+                <button type="button" id="go_to_page" class="btn btn-warning btn-flat">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->
+
+{% endblock %}
+
+{% block script %}
+<!-- page script -->
+<script>
+
+  var host = window.location.origin;
+  var url = host + "/backend/getUsers";
+  var userTable = "";
+
+  $('.jumpIn').hide();
+
+  function jumpIn(flag) {
+    (flag == true) ? $('.jumpIn').show() : $('.jumpIn').hide(); 
+  }
+  datatableDraw(url);
+  function datatableDraw(url) {
+    userTable = $('#userTable').DataTable({
+      "processing": true,
+      "serverSide": true,
+      "destroy": true,
+      "responsive": true,
+      "searching": true,
+      "ordering": true,
+      "autoWidth": false,
+      "lengthMenu": [10, 25, 50, 100, 200, 500, 1000],
+      "pageLength": 10,
+      "fixedHeader": {
+        header: true
+      },
+      "columnDefs": [
+        {
+          "targets": [3],
+          "orderable": false,
+          "searching": false,
+        }, 
+        {
+          "targets": [4],
+          "orderable": false,
+          "searching": false,
+        },
+        {
+          "targets": [5],
+          "orderable": false,
+          "searching": false,
+        },
+        {
+          "targets": [6],
+          "orderable": false,
+          "searching": false,
+        },
+        {
+          "targets": [7],
+          "orderable": false,
+          "searching": false,
+        },
+        {
+          "targets": [8],
+          "orderable": false,
+          "searching": false,
+        },
+        {
+          "targets": [9],
+          "orderable": false,
+          "searching": false,
+        },
+        {
+          "targets": [13],
+          "orderable": false,
+          "searching": false,
+        }
+      ],
+      "ajax": {
+        url: url,
+        "dataSrc": function (successData) {
+          console.log('successData --->', successData);
+          (successData.recordsTotal > successData.perPage) ? jumpIn(true) : jumpIn(false);
+          return successData.data;
+        } 
+      },
+      "columns": [
+        {
+          "data": "created_at", "render": (data, type, row) => {
+            return moment(row.created_at).utc().format("DD/MM/YYYY HH:mm");
+          }
+        },
+        { "data": "name" },
+        { "data": "email_id" },
+        { "data": "ipAddress" },  
+        { "data": "btc" },
+        { "data": "eth" },
+        { "data": "ltc" },
+        { "data": "doge" }, 
+        { "data": "roul1" },
+        { "data": "device" },
+        {
+          "data": "profile_image", "render": (data, typw, row) => {
+            if (row.profile_image) {
+              return '<img width="50px" height="50px" class="img-thumb" src="/frontend/upload/user/' + row.profile_image + '">';
+            } else {
+              return '<img width="50px" height="50px" class="img-thumb" src="/frontend/upload/user/default.png">';
+            }
+          }
+        },
+        { 
+          "data": "status", "render": (data, type, row) => {
+            if (row.status == "1") {
+              return `<td><span class="text-success">Active</span></td>`;
+            } else {
+              return `<td><span class="text-danger">InActive</span></td>`;
+            }
+          }
+        },
+        {
+          "data": "lastLogin", "render": (data, type, row) => {
+            if (row.lastLogin) {
+              return moment(row.lastLogin).utc().format("DD/MM/YYYY HH:mm")
+            } else {
+              return "";
+            }
+          }
+        },
+        {
+          "data": "editDel", "render": (data, type, row) => {
+            // console.log('row --->', row);
+            return '<a href="/backend/user/edit/' + row.id + '" class="btn btn-primary btn-sm" title="Edit User"><i class="fa fa-edit"></i></a><a style="margin-left:5px;" href="/backend/user/delete/' + row.id + '" onClick="return confirm(\'Are you sure to delete?\')" class="btn btn-danger btn-sm" title="Delete User"><i class="glyphicon glyphicon-ban-circle"></i></a>';
+          }
+        }
+      ]
+    });
+  }
+
+  $("#go_to_page").click(function () {
+    pagination();
+  });
+
+  $('#page_input').keypress(function (event) {
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if (keycode == '13') {
+      pagination();
+    }
+  });
+
+  var number = 1;
+  function pagination() {
+    var number = parseInt($("#page_input").val()) - 1;
+    if (number > userTable.page.info().pages) {
+      alert("You Have Cross Page Limit - Total Pages " + userTable.page.info().pages);
+      return false;
+    }
+    userTable.page(number).draw('page');
+  }
+
+
+
+</script>
+{% endblock %}

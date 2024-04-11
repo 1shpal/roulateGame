@@ -1,0 +1,101 @@
+<header class="main-header">
+
+
+  <nav class="navbar navbar-static-top">
+    <!-- Sidebar toggle button-->
+    <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </a>
+    <a href="{{config.baseUrl}}" class="logo">
+      <!-- <span class="logo-mini"><img src="{{config.baseUrl}}frontend/img/logo-shape.png" class="w-45"></span> -->
+      <span class="logo-lg">
+        <img src="{{config.baseUrl}}frontend/img/logo.png">
+      </span>
+    </a>
+    <a href="javascript:void(0)" class="navbar-toggle showtoggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span>
+        <img src="{{config.baseUrl}}frontend/img/default-user.png" alt="{{auth.user.name}}" width="32px" height="32px"
+          class="img-circle">
+      </span>
+    </a>
+    <header class="navbar-inverse">
+      <div class="container-fluid">
+        <div id="mobileher" class="header-right collapse navbar-collapse">
+          <ul id="checkLi">
+            {% if auth.user.id %}
+            <li class="hidden-xs hidden-sm dropdown user user-menu currMenu">
+              <a class="btn-square2 dropdown-toggle" data-toggle="dropdown">
+                <img class="imgAdd" alt="{{wallate.currencyDetails.currency_name | lower}}"
+                  data-img="{{wallate.currencyDetails.id}}">
+                <span class="user_main_balance" data-coinno="{{wallate.currencyDetails.id}}"
+                  data-myval="{{wallate.UserWalletdata.id}}">{{wallate.UserWalletdata.main_balance}}</span> </a>
+              <ul class=" dropdown-menu cs-profile-nav currencyList">
+
+              </ul>
+            </li>
+
+            <li class="hidden-xs hidden-sm"><a href="{{config.baseUrl}}deposit"
+                class="btn-blue text-uppercase">deposit</a></li>
+            <li class="hidden-xs hidden-sm"><a href="{{config.baseUrl}}withdraw"
+                class="btn-blue text-uppercase">Withdraw</a></li>
+            <!-- <li class="hidden-xs hidden-sm"><a href="javascript:;" class="btn-blue text-uppercase">help</a></li> -->
+            <!-- <li class="about-us">
+              <a href="{{config.baseUrl}}about-us">About Us</a>
+            </li> -->
+            {% else %}
+            {% if auth.guest.id %}
+            <li>
+              <span>Guest</span>
+            </li>
+            <li class="hidden-xs hidden-sm dropdown user user-menu currMenu">
+              <a class="btn-square2 dropdown-toggle" data-toggle="dropdown">
+                <img class="imgAdd" src="/frontend/img/{{auth.guest.wallate.currency_image}}"
+                  alt="{{auth.guest.wallate.currency_name | lower}}" data-img="{{auth.guest.wallate.currency_id}}">
+                <span class="user_main_balance" data-coinno="{{auth.guest.wallate.currency_id}}"
+                  data-myval="{{auth.guest.wallate.id}}">{{auth.guest.wallate.main_balance}}</span> </a>
+
+                <ul class=" dropdown-menu cs-profile-nav currencyList">
+                  <li><a style="color: black" href="#">0.00000000  <span> <img style=" height: 22px; width: 23px; padding-bottom: 2px; padding-right: 3px;" src="/frontend/img/btc.svg" alt=""></span><span>BTC</span></a></li>
+                  <li><a style="color: black" href="#">0.00000000 <span> <img  style=" height: 22px; width: 23px; padding-bottom: 2px; padding-right: 3px;" src="/frontend/img/eth.svg" alt=""> </span><span>ETH</span></a></li>
+                  <li><a style="color: black" href="#">0.00000000 <span> <img style=" height: 22px; width: 23px; padding-bottom: 2px; padding-right: 3px;" src="/frontend/img/ltc.svg" alt=""> </span><span>LTC</span></a></li>
+                  <li><a style="color: black" href="#">0.00000000 <span> <img style=" height: 22px; width: 23px; padding-bottom: 2px; padding-right: 3px;" src="/frontend/img/doge.svg" alt=""></span><span>DOGE</span></a></li>
+                  <li><a style="color: black" href=""> {{auth.guest.wallate.main_balance}} <span> <img style=" height: 22px; width: 23px; padding-bottom: 2px; padding-right: 3px;" src="/frontend/img/select-chip.png" alt=""></span><span>ROUL1</span></a></li>
+                </ul>
+
+            </li>
+            {% else %}
+            <li>
+              <a href="/login/guest" data-toggle="modal" class="btn-blue-brder text-uppercase">Playing as a guest</a>
+            </li>
+            {% endif %}
+            <li>
+              <a href="#login-register-modal" data-toggle="modal"
+                class="btn-blue-brder text-uppercase">Signin/Signup</a>
+            </li>
+            {% endif %}
+            <li class="about-us">
+              <a href="{{config.baseUrl}}about-us">About Us</a>
+            </li>
+            <!-- <li>
+              <div class="headSocial_icon">
+                <a href="{{setting.steam_link}}">
+                  <i class="fa fa-steam"></i>
+                </a>
+                <a href="{{setting.twitter_link}}">
+                  <i class="fa fa-twitter"></i>
+                </a>
+                <a href="{{setting.facebook_link}}">
+                  <i class="fa fa-facebook-square "></i>
+                </a>
+              </div>
+            </li> -->
+          </ul>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </header>
+  </nav>
+</header>

@@ -1,0 +1,10 @@
+{% extends "frontend/partials/layout.njk" %}
+{% block body %}
+<div class="container">
+    {{ getContent.description | safe}}
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="{{config.baseUrl}}frontend/script/cryptoCurrency.js"></script>
+{% endblock %}

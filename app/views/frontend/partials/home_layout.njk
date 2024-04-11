@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <title>Bit Roul</title>
+    <link rel="stylesheet" type="text/css" href="{{config.baseUrl}}frontend/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{config.baseUrl}}frontend/css/AdminLTE.min.css">
+    <link rel="stylesheet" type="text/css" href="{{config.baseUrl}}frontend/css/all-skins.min.css">
+    <link rel="stylesheet" type="text/css" href="{{config.baseUrl}}frontend/css/dist/main.css">
+    <!-- <link rel="stylesheet" type="text/css" href="{{config.baseUrl}}frontend/css/dist/darkmode.css"> -->
+    <link rel="stylesheet" type="text/css" href="{{config.baseUrl}}frontend/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{{config.baseUrl}}frontend/css/toastr.min.css">
+</head>
+
+<body id="body" class="skin-blue sidebar-collapse sidebar-mini light-mode" oncontextmenu="return true;">
+    <div class="wrapper">
+
+        {% include "frontend/partials/header.njk" %}
+
+        {% include "frontend/partials/sidebar.njk" %}
+
+        {% block body %}{% endblock %}
+
+        {% include "frontend/partials/chat.njk" %}
+        
+        <!-- login and register popup section add -->
+        {% include "frontend/partials/auth.njk" %}
+        <!-- login and register popup section add -->
+    </div>
+    {% include "frontend/partials/js.njk" %}
+    <script>
+        var baseUrl = "{{config.baseUrl}}";
+        var socketUrl = baseUrl.replace(/\/$/, "");
+        var socket = io.connect(socketUrl);           
+    </script>
+    {% if(auth.user.id) %}
+    <script type="text/javascript">
+        var userId = "{{auth.user.id}}";
+    </script>
+    {% else %}
+    <script type="text/javascript">
+        var userId = 0;
+        localStorage.removeItem("betsDetail");
+    </script>
+    {% endif %}
+
+{% if(info|length)>0 %}
+  <script type="text/javascript">
+    $.toast({ heading: '', text: "{{info | safe }}", position: 'top-right', icon: 'info' });
+  </script>
+  {% endif %}
+  
+    {% if(error|length)>0 %}
+    <script type="text/javascript">
+        $.toast({ heading: 'Error', text: "{{error | safe }}", position: 'top-right', icon: 'error' });
+    </script>
+    {% endif %}
+
+    {% if(success|length)>0 %}
+    <script type="text/javascript">
+        $.toast({ heading: 'Success', text: "{{success | safe }}", position: 'top-right', icon: 'success' });
+    </script>
+    {% endif %}
+    <script type="text/javascript">        
+    </script> s
+    <script type="text/javascript" src="{{config.baseUrl}}build/home-common.js"></script>
+    <script type="text/javascript" src="{{config.baseUrl}}build/chat-common.js"></script>
+    <script type="text/javascript" src="{{config.baseUrl}}frontend/script/validation/login.js"></script>
+    <script type="text/javascript" src="{{config.baseUrl}}frontend/script/validation/register.js"></script>
+    <script type="text/javascript" src="{{config.baseUrl}}frontend/script/cryptoCurrency.js"></script>
+    <!-- Start of bitroul Zendesk Widget script -->
+    <script id="ze-snippet"
+        src="https://static.zdassets.com/ekr/snippet.js?key=26ae8201-b559-4d5a-9ba7-9c0f75670671"> </script>
+    <!-- End of bitroul Zendesk Widget script -->
+</body>
+
+</html>

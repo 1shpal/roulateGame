@@ -1,0 +1,60 @@
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <!--li class="header">MAIN NAVIGATION</li-->
+        <li {% if alias=="dashboard" %} class="active" {% endif %}>
+          <a href="/backend/dashboard">
+            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+            <span class="pull-right-container">
+              <!-- <small class="label pull-right bg-green">new</small> -->
+            </span>
+          </a>
+        </li>
+        <li {% if alias=="user" %} class="active" {% endif %}>
+          <a href="/backend/user">
+            <i class="fa fa-users"></i> <span>Users</span>
+          </a>
+        </li>        
+         <li {% if alias=="light_roulette" %} class="active" {% endif %}>
+          <a href="/backend/light_roulette">
+            <i class="fa fa-life-ring"></i> <span>Lighting Roulette</span>
+          </a>
+        </li>        
+        <li {% if alias=="deposite" %} class="active" {% endif %}>
+          <a href="/backend/deposit">
+            <i class="fa fa-money"></i> <span>Deposit</span>
+          </a>
+        </li>
+        <li {% if alias=="withdraw" %} class="active" {% endif %}>
+          <a href="/backend/withdraw">
+            <i class="fa fa-money"></i> <span>Withdraw</span>
+          </a>
+        </li>
+        <li class="treeview {% if alias=="cms" %} menu-open {% endif %}">
+          <a href="javascript:void(0);">
+            <i class="fa fa-list"></i> <span>CMS</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" {% if alias=="cms" %} style="display: block;" {% endif %}>
+            <li {% if subAlias=="add" %} class="active" {% endif %}><a href="/backend/cms/add"><i class="fa fa-circle-o"></i> Add CMS</a></li>
+            <li {% if subAlias=="list" %} class="active" {% endif %}><a href="/backend/cms"><i class="fa fa-circle-o"></i> View CMS</a></li>
+          </ul>
+        </li>
+        <!-- <li {% if alias=="banner" %} class="active" {% endif %}>
+            <a href="/backend/banner">
+              <i class="fa fa-sliders"></i> <span>BANNER</span>
+            </a>
+        </li> -->
+        <li {% if alias=="setting" %} class="active" {% endif %}>
+          <a href="/backend/setting">
+            <i class="fa fas fa-cogs"></i> <span>Setting</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>

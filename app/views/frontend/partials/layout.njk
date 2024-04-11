@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+  <title>{{title}}</title>
+
+  <!-- css section -->
+  {% include "frontend/partials/css.njk" %}
+  <!-- css section -->
+
+  {% block style %}{% endblock %}
+  <script type="text/javascript">
+    /*if(localStorage.getItem("site_mode") == "dark-mode"){
+        var body = document.body;
+        body.classList.add("dark-mode");
+    }*/
+  </script>
+</head>
+
+{% set bodyClsName = '' %}
+{% if(alias == "game")%}
+{% set bodyClsName = 'roulatte-page' %}
+{% endif %}
+
+{% set onclick = '' %}
+{% if(subAlias == "lighting-roulette1") %}
+{% set onclick = 'f1()'%}
+{% endif %}
+
+<body id="body" class="hold-transition skin-blue sidebar-collapse sidebar-mini {{bodyClsName}}" onload="{{onclick}}">
+  <div class="wrapper">
+    <!-- header nav-bar section -->
+    {% include "frontend/partials/header.njk" %}
+    <!-- header nav-bar section End-->
+
+    <!-- sidebar section -->
+    {% include "frontend/partials/sidebar.njk" %}
+    <!-- sidebar section End-->
+    {% if(alias == "game") %}
+    {% set className = 'home-content' %}
+    {% endif %}
+
+    {% if(subAlias == "lighting-roulette") %}
+    {% set className = 'home-content bg-roulatte' %}
+    {% endif %}
+    <div class="content-wrapper">
+      <section class="content {{className}}">
+        <div class="row">
+          <!-- game main section -->
+          {% block body %}{% endblock %}
+          <!-- game main section End-->
+        </div>
+      </section>
+    </div>
+  </div>
+  {% block popup %}{% endblock %}
+
+  <!-- login and register popup section add -->
+  {% include "frontend/partials/auth.njk" %}
+  <!-- login and register popup section add -->
+
+  <!-- js section -->
+  {% include "frontend/partials/js.njk" %}
+  <!-- js section End-->
+
+  <script type="text/javascript">
+    window.baseUrl = "{{config.baseUrl}}";
+    window.socketUrl = baseUrl.replace(/\/$/, "");
+    window.socket = io.connect(socketUrl);
+  </script>
+  {% if(auth.user.id) %}
+  <script type="text/javascript">
+    window.userId = "{{auth.user.id}}";
+    socket.on("connect", () => {
+      socket.emit("ReconnectPlayer", { "userId": userId }, (res) => { });
+    });
+    localStorage.removeItem("betsDetail");
+    localStorage.removeItem("guestProvably");
+    localStorage.removeItem("guestGame");
+    localStorage.removeItem("guestGameHistory");
+  </script>
+  {% else %}
+
+  {% if auth.guest.id %}
+  <script type="text/javascript">  
+    window.userId = "{{auth.guest.id}}";
+    socket.on("connect", () => {
+      socket.emit("guestReconnectPlayer", { "userId": userId }, (res) => {
+
+      });
+    });
+    localStorage.removeItem("betsDetail");
+  </script>
+  {% else %}
+  <script type="text/javascript">
+    window.userId = 0;
+    localStorage.removeItem("betsDetail");
+    localStorage.removeItem("guestProvably");
+    localStorage.removeItem("guestGame");
+    localStorage.removeItem("guestGameHistory");
+  </script>
+  {% endif %}
+  {% endif %}
+
+
+  {% if(info|length)>0 %}
+  <script type="text/javascript">
+    $.toast({ heading: '', text: "{{info | safe }}", position: 'top-right', icon: 'info' });
+  </script>
+  {% endif %}
+
+  {% if(error|length)>0 %}
+  <script type="text/javascript">
+    $.toast({ heading: 'Error', text: "{{error | safe }}", position: 'top-right', icon: 'error' });
+  </script>
+  {% endif %}
+
+  {% if(success|length)>0 %}
+  <script type="text/javascript">
+    $.toast({ heading: 'Success', text: "{{success | safe }}", position: 'top-right', icon: 'success' });
+  </script>
+  {% endif %}
+
+  {% if(auth.user.id) %}
+  {% else %}
+  <script type="text/javascript" src="{{config.baseUrl}}frontend/script/validation/login.js"></script>
+  <script type="text/javascript" src="{{config.baseUrl}}frontend/script/validation/register.js"></script>
+  {% endif %}
+
+  <script type="text/javascript">
+
+    // console.log = function () { };
+    // $('#body').addClass(localStorage.getItem("site_mode"));
+    // if (localStorage.getItem("site_mode") == "dark-mode") {
+    //   $('.mode input[type="checkbox"]').attr('checked', 'checked');
+    //   $(".mode_class").text("Dark Mode:");
+    // } else {
+    //   $(".mode_class").text("Light Mode:");
+    // }
+
+    window.CurrencyMaster = [];
+    document.onmousedown = disableclick;
+    function disableclick(event) {
+      if (event.button == 2) {
+        return false;
+      }
+    }
+    document.onkeydown = function (e) {
+      if (event.keyCode == 123) {
+        return false;
+      }
+      if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+        return false;
+      }
+      if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+        return false;
+      }
+      if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+        return false;
+
+      }
+    }
+
+    window.addEventListener("load", (event) => {
+      // console.log("navigator.onLine", navigator.onLine);      
+      if (!navigator.onLine) {
+        $.toast({ heading: '', text: "You're offline. Check your connection.", position: 'top-right', icon: 'info', hideAfter: 5000 });
+      }
+    });
+    
+  </script>
+
+  {% block script %}{% endblock %}
+</body>
+
+</html>
